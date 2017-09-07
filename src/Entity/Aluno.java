@@ -11,4 +11,6 @@ package Entity;
  */
 public class Aluno {
     
+    String nome;
+    
 }
