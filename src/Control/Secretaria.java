@@ -6,6 +6,7 @@
 package Control;
 
 import Entity.Aluno;
+import Entity.Disciplina;
 import Entity.Professor;
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public class Secretaria {
     
     ArrayList<Professor> listaProfessor;
     ArrayList<Aluno> listaAluno;
+    ArrayList<Disciplina> listaDisciplina;
 
     public ArrayList<Professor> getListaProfessor() {
         return listaProfessor;
@@ -34,7 +36,9 @@ public class Secretaria {
         this.listaAluno = listaAluno;
     }
     
-    public void cadastroAluno (){
+    public void cadastroAluno(){
+  
+        
         
     }
     
