@@ -12,5 +12,6 @@ package Entity;
 public class Aluno {
     
     String nome;
+    int idade;	
     
 }
