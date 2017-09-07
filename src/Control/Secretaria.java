@@ -34,6 +34,9 @@ public class Secretaria {
         this.listaAluno = listaAluno;
     }
     
+    public void cadastroAluno (){
+        
+    }
     
     
     
