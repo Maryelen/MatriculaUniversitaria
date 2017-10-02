@@ -9,6 +9,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class TelaInicialOriginal extends JFrame
 {
@@ -23,6 +25,12 @@ public class TelaInicialOriginal extends JFrame
 		getContentPane().add(pnlSistemaMatriUniversitario, BorderLayout.CENTER);
 		
 		JButton btnCadastroDisciplina = new JButton();
+		btnCadastroDisciplina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CadastroDeDisciplina cadastroDeDisciplina = new CadastroDeDisciplina();
+				cadastroDeDisciplina.setVisible(true);
+			}
+		});
 		btnCadastroDisciplina.setText("Cadastro de Disciplina");
 		
 		JButton btnRelatorios = new JButton();
@@ -50,6 +58,12 @@ public class TelaInicialOriginal extends JFrame
         });
 		
 		JButton btnCadastroCurso = new JButton();
+		btnCadastroCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CadastroDeCurso cadastroDeCurso = new CadastroDeCurso();
+				cadastroDeCurso.setVisible(true);
+			}
+		});
 		btnCadastroCurso.setText("Cadastro de Curso");
 		
 		JLabel lblSistemaMatriUniversitario = new JLabel();
