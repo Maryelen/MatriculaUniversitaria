@@ -5,10 +5,40 @@
  */
 package Entity;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Maryelen
  */
-public class Professor extends Usuario {
+public class Professor {
+	
+	String nome;	
+    int matricula;
+    ArrayList<Disciplina> ListaDisciplinas = new ArrayList<>();
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public int getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
+    }
+//
+//    public Disciplina getDisciplina() {
+//        return disciplina;
+//    }
+//
+//    public void setDisciplina(Disciplina disciplina) {
+//        this.disciplina = disciplina;
+//    }
     
     }

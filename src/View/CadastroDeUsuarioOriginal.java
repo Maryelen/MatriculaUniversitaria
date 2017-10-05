@@ -6,9 +6,6 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.BorderLayout;
-import java.awt.Checkbox;
-import java.awt.CheckboxGroup;
-import java.awt.CheckboxMenuItem;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,33 +14,20 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JCheckBoxMenuItem;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
 
-import javax.swing.SwingConstants;
-import javax.swing.event.ListSelectionListener;
-
-import com.sun.org.apache.xerces.internal.dom.DeferredElementNSImpl;
-
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 
 import Entity.Aluno;
-import Entity.Disciplina;
+import Entity.Constantes;
 import Entity.Principal;
 import Entity.Professor;
-import Entity.Usuario;
-import Entity.Usuario.OpcoesUsuario;
-
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
-import java.util.List;
 import java.awt.event.ActionEvent;
-import java.awt.Point;
 import java.awt.Dimension;
 
 public class CadastroDeUsuarioOriginal extends JFrame {
@@ -75,7 +59,7 @@ public class CadastroDeUsuarioOriginal extends JFrame {
 
 			}
 		});
-		cmbTipoUsuario.setModel(new DefaultComboBoxModel(new String[] { "", "Aluno", "Professor" }));
+		cmbTipoUsuario.setModel(new DefaultComboBoxModel(new String[] {"", "Aluno", "Professor"}));
 
 		txtMatricula = new JTextField();
 
@@ -86,6 +70,8 @@ public class CadastroDeUsuarioOriginal extends JFrame {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				
+				
 				String resumoDeValidacoes = "";
 
 				// Valida se tem algo selecionado no combo de Tipo de Usuario
@@ -107,23 +93,27 @@ public class CadastroDeUsuarioOriginal extends JFrame {
 					resumoDeValidacoes += "Não é possível selecionar mais de 5 disciplinas! \n";
 
 				}
-
+				
 				if (!resumoDeValidacoes.isEmpty()) {
 					JOptionPane.showMessageDialog(null, resumoDeValidacoes);
 					
 				} else {
 
-					if (cmbTipoUsuario.getSelectedIndex() == OpcoesUsuario.ALUNO.getValor()) {
+					if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioAluno) {
 						Aluno aluno = new Aluno();
-						aluno.setNome("");
-						aluno.setMatricula(0);
-						JOptionPane.showMessageDialog(null, "Sou Aluno");
 						
-					} else if (cmbTipoUsuario.getSelectedIndex() == OpcoesUsuario.PROFESSOR.getValor()) {
+						// TODO: Terminar dados
+						//aluno.setNome(txtNo);
+						aluno.setMatricula(Integer.parseInt(txtMatricula.getText()));
+						Principal.listaAlunos.add(aluno);
+						
+					} else if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioProfessor) {
 						Professor professor = new Professor();
-						professor.setNome("");
-						professor.setMatricula(0);
-						JOptionPane.showMessageDialog(null, "Sou Professor");
+						
+						// TODO: Terminar dados
+						//professor.setNome("");
+						professor.setMatricula(Integer.parseInt(txtMatricula.getText()));
+						Principal.listaProfessores.add(professor);
 						
 					}
 				}
@@ -138,48 +128,53 @@ public class CadastroDeUsuarioOriginal extends JFrame {
 		JLabel lblVincularDisciplina = new JLabel("Vincular disciplina:");
 
 		GroupLayout gl_pnlCadastroUsuario = new GroupLayout(pnlCadastroUsuario);
-		gl_pnlCadastroUsuario
-				.setHorizontalGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
-						.addGroup(
-								gl_pnlCadastroUsuario.createSequentialGroup().addGap(51)
-										.addGroup(gl_pnlCadastroUsuario
-												.createParallelGroup(Alignment.LEADING).addComponent(lblMatricula)
-												.addComponent(lblTipoUsuario).addComponent(lblVincularDisciplina))
-										.addGap(18)
-										.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_pnlCadastroUsuario
-														.createParallelGroup(Alignment.LEADING, false)
-														.addComponent(cmbTipoUsuario, 0, GroupLayout.DEFAULT_SIZE,
-																Short.MAX_VALUE)
-														.addComponent(txtMatricula, GroupLayout.DEFAULT_SIZE, 124,
-																Short.MAX_VALUE))
-												.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 177,
-														GroupLayout.PREFERRED_SIZE))
-										.addContainerGap(82, Short.MAX_VALUE))
-						.addGroup(gl_pnlCadastroUsuario.createSequentialGroup().addGap(40).addComponent(btnVoltar)
-								.addPreferredGap(ComponentPlacement.RELATED, 220, Short.MAX_VALUE)
-								.addComponent(btnSalvar).addGap(39))
-						.addGroup(Alignment.TRAILING,
-								gl_pnlCadastroUsuario
-										.createSequentialGroup().addGap(156).addComponent(lblCadastroUsuario,
-												GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addGap(155)));
-		gl_pnlCadastroUsuario.setVerticalGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup().addComponent(lblCadastroUsuario).addGap(30)
-						.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblTipoUsuario).addComponent(cmbTipoUsuario, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblMatricula).addComponent(txtMatricula, GroupLayout.PREFERRED_SIZE,
-										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblVincularDisciplina).addComponent(scrollPane,
-										GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
-						.addGap(18).addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnVoltar).addComponent(btnSalvar))
-						.addContainerGap(20, Short.MAX_VALUE)));
+		gl_pnlCadastroUsuario.setHorizontalGroup(
+			gl_pnlCadastroUsuario.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
+					.addGap(51)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblMatricula)
+						.addComponent(lblTipoUsuario)
+						.addComponent(lblVincularDisciplina))
+					.addGap(18)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+						.addComponent(txtMatricula)
+						.addComponent(cmbTipoUsuario, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addContainerGap(82, Short.MAX_VALUE))
+				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
+					.addGap(40)
+					.addComponent(btnVoltar)
+					.addPreferredGap(ComponentPlacement.RELATED, 220, Short.MAX_VALUE)
+					.addComponent(btnSalvar)
+					.addGap(39))
+				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
+					.addGap(156)
+					.addComponent(lblCadastroUsuario, GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+					.addGap(155))
+		);
+		gl_pnlCadastroUsuario.setVerticalGroup(
+			gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
+					.addComponent(lblCadastroUsuario)
+					.addGap(30)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblTipoUsuario)
+						.addComponent(cmbTipoUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblMatricula)
+						.addComponent(txtMatricula, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblVincularDisciplina)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnVoltar)
+						.addComponent(btnSalvar))
+					.addContainerGap(20, Short.MAX_VALUE))
+		);
 
 		pnlCadastroUsuario.setLayout(gl_pnlCadastroUsuario);
 	}

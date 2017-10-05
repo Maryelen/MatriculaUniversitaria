@@ -37,6 +37,12 @@ public class TelaInicialOriginal extends JFrame
 		btnRelatorios.setText("Relatórios");
 		
 		JButton btnConsultar = new JButton();
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Consultar consultar = new Consultar();
+				consultar.setVisible(true);
+			}
+		});
 		btnConsultar.setText("Consultar");
 		
 		JButton btnCadastroUsuario = new JButton();
