@@ -1,4 +1,4 @@
-package Entity;
+package Entidade;
 
 public class Constantes {
 

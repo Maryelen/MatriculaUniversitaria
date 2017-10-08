@@ -1,4 +1,4 @@
-package View;
+package Visao;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,8 +13,9 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import Entity.Disciplina;
-import Entity.Principal;
+import Controle.ControleDisciplina;
+import Controle.ControlePrincipal;
+import Entidade.Disciplina;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -27,80 +28,84 @@ public class CadastroDeDisciplina extends JFrame {
 	/**
 	 * 
 	 */
+	
+	ControleDisciplina controleDisciplina;
+	
 	private static final long serialVersionUID = 1L;
+	
+	private GroupLayout gl_panel;
+	
+	private JPanel panel;
+	
+	private JLabel lblCadastroDeDisciplina;
+	private JLabel lblNome;
+	private JLabel lblCodigo;
+	private JLabel lblCargaHoraria;
+	private JLabel lblNumeroDeVagas;
+	private JLabel lblSemestre;
+	private JLabel lblAno;
+	
 	private JTextField txtNome;
 	private JTextField txtCodigo;
 	private JTextField txtCargaHoraria;
 	private JTextField txtNumDeVagas;
 	private JTextField txtSemestre;
 	private JTextField txtAno;
+	
+	private JButton btnSalvar;
+	private JButton btnVoltar;
+	
+	public void iniciarControles(){
+		
+		panel = new JPanel();
+		
+		lblCadastroDeDisciplina = new JLabel("Cadastro de Disciplina");
+		lblNome = new JLabel("Nome:");
+		lblCodigo = new JLabel("Código:");
+		lblAno = new JLabel("Ano:");
+		lblCargaHoraria = new JLabel("Carga Horária:");
+		lblNumeroDeVagas = new JLabel("Nº de vagas:");
+		lblSemestre = new JLabel("Semestre:");
+		
+		txtNome = new JTextField();
+		txtCodigo = new JTextField();
+		txtCargaHoraria = new JTextField();
+		txtNumDeVagas = new JTextField();
+		txtSemestre = new JTextField();
+		txtAno = new JTextField();
+		
+		btnSalvar = new JButton("Salvar");
+		btnVoltar = new JButton("Voltar");
+		
+	}
 
 	public CadastroDeDisciplina() {
+		
+		controleDisciplina = new ControleDisciplina();
+		
+		iniciarControles();
 		
 		getContentPane().setLayout(new FlowLayout());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(500, 376);
 		
-		JPanel panel = new JPanel();
 		panel.setMaximumSize(new Dimension(400, 400));
 		getContentPane().add(panel, BorderLayout.CENTER);
 		
-		JLabel lblCadastroDeDisciplina = new JLabel("Cadastro de Disciplina");
-		
-		JLabel lblNome = new JLabel("Nome:");
-		
-		JLabel lblCodigo = new JLabel("Código:");
-		
-		JLabel lblCargaHoraria = new JLabel("Carga Horária:");
-		
-		JLabel lblNumeroDeVagas = new JLabel("Nº de vagas:");
-		
-		JLabel lblSemestre = new JLabel("Semestre:");
-		
-		JLabel lblAno = new JLabel("Ano:");
-		
-		txtNome = new JTextField();
 		txtNome.setColumns(10);
-		
-		txtCodigo = new JTextField();
 		txtCodigo.setColumns(10);
-		
-		txtCargaHoraria = new JTextField();
 		txtCargaHoraria.setColumns(10);
-		
-		txtNumDeVagas = new JTextField();
 		txtNumDeVagas.setColumns(10);
-		
-		txtSemestre = new JTextField();
 		txtSemestre.setColumns(10);
-		
-		txtAno = new JTextField();
 		txtAno.setColumns(10);
 		
-		JButton btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Calendar calendar = Calendar.getInstance();
-				
-				if(txtAno.getText().isEmpty() || Integer.parseInt(txtAno.getText()) < calendar.get(Calendar.YEAR)){
-					JOptionPane.showMessageDialog(null, String.format("Ano inválido! Ano deve ser maior ou igual a ano %d.", calendar.get(Calendar.YEAR)));
-				}else{
-					
-				Disciplina disciplina = new Disciplina();
-				disciplina.setNome(txtNome.getText());
-				disciplina.setAno(Integer.parseInt(txtAno.getText()));
-				disciplina.setCodigo(Integer.parseInt(txtCodigo.getText()));
-				disciplina.setCargaHoraria(Integer.parseInt(txtCargaHoraria.getText()));
-				disciplina.setNumeroVagas(Integer.parseInt(txtNumDeVagas.getText()));
-				disciplina.setSemestre(Integer.parseInt(txtSemestre.getText()));
-				Principal.listaDisciplinas.add(disciplina);
-					
-				}
+				controleDisciplina.cadastrarDisciplina(txtAno, txtNome, txtCodigo, txtCargaHoraria, txtNumDeVagas, txtSemestre);
 			}
 		});
 		
-		JButton btnVoltar = new JButton("Voltar");
-		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()

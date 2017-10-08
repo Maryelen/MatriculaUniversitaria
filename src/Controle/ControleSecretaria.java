@@ -3,18 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Control;
+package Controle;
 
-import Entity.Aluno;
-import Entity.Disciplina;
-import Entity.Professor;
 import java.util.ArrayList;
+
+import Entidade.Aluno;
+import Entidade.Disciplina;
+import Entidade.Professor;
 
 /**
  *
  * @author Maryelen
  */
-public class Secretaria {
+public class ControleSecretaria {
     
     ArrayList<Professor> listaProfessor;
     ArrayList<Aluno> listaAluno;

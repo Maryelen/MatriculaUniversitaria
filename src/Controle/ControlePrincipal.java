@@ -1,12 +1,13 @@
-package Entity;
+package Controle;
 
 import java.util.ArrayList;
 
-import View.CadastroDeUsuario;
-import View.TelaInicial;
-import View.TelaInicialOriginal;
+import Entidade.Aluno;
+import Entidade.Disciplina;
+import Entidade.Professor;
+import Visao.TelaInicial;
 
-public class Principal {
+public class ControlePrincipal {
 
 	public static ArrayList<Disciplina> listaDisciplinas = new ArrayList<>();
 	public static ArrayList<Aluno> listaAlunos = new ArrayList<>();
@@ -21,7 +22,7 @@ public class Principal {
 	}
 
 	public static void main(String[] args) {
-		TelaInicialOriginal telaInicial = new TelaInicialOriginal();
+		TelaInicial telaInicial = new TelaInicial();
 		telaInicial.setVisible(true);
 		
 	}

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity;
+package Entidade;
 
 import java.util.ArrayList;
 
@@ -32,13 +32,12 @@ public class Professor {
     public void setMatricula(int matricula) {
         this.matricula = matricula;
     }
-//
-//    public Disciplina getDisciplina() {
-//        return disciplina;
-//    }
-//
-//    public void setDisciplina(Disciplina disciplina) {
-//        this.disciplina = disciplina;
-//    }
-    
+
+	public ArrayList<Disciplina> getListaDisciplinas() {
+		return ListaDisciplinas;
+	}
+
+	public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
+		ListaDisciplinas = listaDisciplinas;
+	}
     }

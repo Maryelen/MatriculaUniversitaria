@@ -1,4 +1,4 @@
-package View;
+package Visao;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,7 +14,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-import Entity.Principal;
+import Controle.ControlePrincipal;
 
 import javax.swing.JList;
 import java.awt.event.ActionListener;
@@ -23,6 +23,7 @@ import java.awt.event.ActionEvent;
 public class CadastroDeCurso extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
+	
 	private JTextField txtNome;
 	private JTextField txtUnidade;
 	
@@ -32,8 +33,6 @@ public class CadastroDeCurso extends JFrame {
 		panel.setMaximumSize(new Dimension(400, 400));
 		getContentPane().add(panel, BorderLayout.NORTH);
 		this.setSize(500, 376);
-		
-//		JLabel lblListaDeDisciplinas = new JLabel("Lista de Disciplinas:");
 		
 		JLabel lblUnidade = new JLabel("Unidade:");
 		
@@ -116,7 +115,7 @@ public class CadastroDeCurso extends JFrame {
 					.addGap(67))
 		);
 		
-		JList<Object> listDisciplinas = new JList<Object>(Principal.VetorDisciplinas());
+		JList<Object> listDisciplinas = new JList<Object>(ControlePrincipal.VetorDisciplinas());
 		scrollPane.setViewportView(listDisciplinas);
 		
 		listDisciplinas.setVisibleRowCount(5);

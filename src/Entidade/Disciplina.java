@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entity;
+package Entidade;
 
 /**
  *
@@ -11,9 +11,9 @@ package Entity;
  */
 public class Disciplina {
     
-    int codigo;
     String nome;
     double cargaHoraria;
+    int codigo;
     int numeroVagas;
     int semestre;
     int ano;

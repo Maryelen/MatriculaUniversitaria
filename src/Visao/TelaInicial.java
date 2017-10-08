@@ -1,4 +1,4 @@
-package View;
+package Visao;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,9 +12,9 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class TelaInicialOriginal extends JFrame
+public class TelaInicial extends JFrame
 {
-	public TelaInicialOriginal() {
+	public TelaInicial() {
 		
 		getContentPane().setLayout(new FlowLayout());
 		setResizable(false);
@@ -39,7 +39,7 @@ public class TelaInicialOriginal extends JFrame
 		JButton btnConsultar = new JButton();
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Consultar consultar = new Consultar();
+				ConsultarUsuario consultar = new ConsultarUsuario();
 				consultar.setVisible(true);
 			}
 		});
@@ -54,7 +54,7 @@ public class TelaInicialOriginal extends JFrame
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 //System.out.println("teste");
                 
-                CadastroDeUsuarioOriginal cadastroDeUsuarioOriginal = new CadastroDeUsuarioOriginal();
+                CadastroDeUsuario cadastroDeUsuarioOriginal = new CadastroDeUsuario();
                 cadastroDeUsuarioOriginal.setVisible(true);
                 //btnCadastroUsuario = 
                 //chamar cadastro de aluno
