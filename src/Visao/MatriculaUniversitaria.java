@@ -11,15 +11,10 @@ package Visao;
  * @author Maryelen
  */
 public class MatriculaUniversitaria {
+	
+	public static void main(String[] args) {
+		TelaInicial tela = new TelaInicial();
+		tela.setVisible(true);
+	}
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        
-       
-
-    }
-    
 }

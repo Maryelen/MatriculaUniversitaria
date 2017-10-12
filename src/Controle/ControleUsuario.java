@@ -2,6 +2,7 @@ package Controle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -10,14 +11,15 @@ import javax.swing.JTextField;
 
 import Entidade.Aluno;
 import Entidade.Constantes;
+import Entidade.Curso;
 import Entidade.Disciplina;
 import Entidade.Professor;
 
 public class ControleUsuario {
 
-	public void CadastrarUsuario(JComboBox<String> cmbTipoUsuario, JList<String> listaDisciplinas,
+	public void CadastrarUsuario(JComboBox<String> cmbTipoUsuario, JList<Object> listaDisciplinas,
 			JTextField txtMatricula, JTextField txtNomeUsuario) {
-		
+
 		String resumoDeValidacoes = "";
 
 		// Valida se tem algo selecionado no combo de Tipo de Usuario
@@ -40,42 +42,91 @@ public class ControleUsuario {
 			if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioAluno) {
 				Aluno aluno = new Aluno();
 
-				// TODO: Terminar dados
 				aluno.setNome(txtNomeUsuario.getText());
 				aluno.setMatricula(Integer.parseInt(txtMatricula.getText()));
-				
+
 				aluno.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas.getSelectedValuesList()));
 				ControlePrincipal.listaAlunos.add(aluno);
 
 			} else if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioProfessor) {
 				Professor professor = new Professor();
-				//professor.setListaDisciplinas(listaDisciplinas);
 				professor.setNome(txtNomeUsuario.getText());
 				professor.setMatricula(Integer.parseInt(txtMatricula.getText()));
-				
-				
 				professor.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas.getSelectedValuesList()));
-				
-				
+
 				ControlePrincipal.listaProfessores.add(professor);
 
 			}
 		}
 	}
-	
-	public ArrayList<Disciplina> getDisciplinasSelecionadas(List<String> listaDisciplinasSelecionadas){
-	
+
+	public ArrayList<Disciplina> getDisciplinasSelecionadas(List<Object> listaDisciplinasSelecionadas) {
+
 		ArrayList<Disciplina> disciplinasSelecionadas = new ArrayList<>();
-		for( String disciplinaSelecionada : listaDisciplinasSelecionadas ){
-			for( Disciplina disciplina: ControlePrincipal.listaDisciplinas ){
-				
-				if(disciplina.getNome().equals(disciplinaSelecionada))
-				{
+		for (Object disciplinaSelecionada : listaDisciplinasSelecionadas) {
+			for (Disciplina disciplina : ControlePrincipal.listaDisciplinas) {
+
+				if (disciplina.getNome().equals(disciplinaSelecionada)) {
 					disciplinasSelecionadas.add(disciplina);
 					break;
 				}
 			}
 		}
 		return disciplinasSelecionadas;
+	}
+
+	public void validaPesquisaProfessor(JTextField textMatricula, JTextField txtNome,
+			ArrayList<Object> objetosEncontrados, Professor professor) {
+
+		boolean validarMatricula = !textMatricula.getText().isEmpty()
+				&& Integer.parseInt(textMatricula.getText()) == professor.getMatricula();
+
+		boolean validarNome = !txtNome.getText().isEmpty() && txtNome.getText().equals(professor.getNome());
+
+		if (validarMatricula && validarNome) {
+
+			objetosEncontrados.add(professor);
+
+		} else if (textMatricula.getText().isEmpty() && validarNome) {
+
+			objetosEncontrados.add(professor);
+
+		} else if (txtNome.getText().isEmpty() && validarMatricula) {
+
+			objetosEncontrados.add(professor);
+		}
+	}
+
+	public void validaPesquisaAluno(JTextField textMatricula, JTextField txtNome, ArrayList<Object> objetosEncontrados,
+			Aluno aluno) {
+
+		boolean validarMatricula = !textMatricula.getText().isEmpty()
+				&& Integer.parseInt(textMatricula.getText()) == aluno.getMatricula();
+
+		boolean validarNome = !txtNome.getText().isEmpty() && txtNome.getText().equals(aluno.getNome());
+
+		if (validarMatricula && validarNome) {
+
+			objetosEncontrados.add(aluno);
+
+		} else if (textMatricula.getText().isEmpty() && validarNome) {
+
+			objetosEncontrados.add(aluno);
+
+		} else if (txtNome.getText().isEmpty() && validarMatricula) {
+
+			objetosEncontrados.add(aluno);
+		}
+	}
+
+	public Vector<String> getCursos() {
+
+		Vector<String> vector = new Vector<>();
+		for (Curso curso : ControlePrincipal.listaDisciplinasCurso) {
+
+			vector.add(curso.getNome());
+		}
+
+		return vector;
 	}
 }

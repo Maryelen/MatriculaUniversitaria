@@ -12,26 +12,26 @@ import java.util.ArrayList;
  * @author Maryelen
  */
 public class Professor {
-	
-	String nome;	
-    int matricula;
-    ArrayList<Disciplina> ListaDisciplinas = new ArrayList<>();
 
-    public String getNome() {
-        return nome;
-    }
+	String nome;
+	int matricula;
+	ArrayList<Disciplina> ListaDisciplinas = new ArrayList<>();
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public int getMatricula() {
-        return matricula;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setMatricula(int matricula) {
-        this.matricula = matricula;
-    }
+	public int getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
 
 	public ArrayList<Disciplina> getListaDisciplinas() {
 		return ListaDisciplinas;
@@ -40,4 +40,4 @@ public class Professor {
 	public void setListaDisciplinas(ArrayList<Disciplina> listaDisciplinas) {
 		ListaDisciplinas = listaDisciplinas;
 	}
-    }
+}

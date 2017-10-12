@@ -16,33 +16,29 @@ import Entidade.Professor;
  * @author Maryelen
  */
 public class ControleSecretaria {
-    
-    ArrayList<Professor> listaProfessor;
-    ArrayList<Aluno> listaAluno;
-    ArrayList<Disciplina> listaDisciplina;
 
-    public ArrayList<Professor> getListaProfessor() {
-        return listaProfessor;
-    }
+	ArrayList<Professor> listaProfessor;
+	ArrayList<Aluno> listaAluno;
+	ArrayList<Disciplina> listaDisciplina;
 
-    public void setListaProfessor(ArrayList<Professor> listaProfessor) {
-        this.listaProfessor = listaProfessor;
-    }
+	public ArrayList<Professor> getListaProfessor() {
+		return listaProfessor;
+	}
 
-    public ArrayList<Aluno> getListaAluno() {
-        return listaAluno;
-    }
+	public void setListaProfessor(ArrayList<Professor> listaProfessor) {
+		this.listaProfessor = listaProfessor;
+	}
 
-    public void setListaAluno(ArrayList<Aluno> listaAluno) {
-        this.listaAluno = listaAluno;
-    }
-    
-    public void cadastroAluno(){
-  
-        
-        
-    }
-    
-    
-    
+	public ArrayList<Aluno> getListaAluno() {
+		return listaAluno;
+	}
+
+	public void setListaAluno(ArrayList<Aluno> listaAluno) {
+		this.listaAluno = listaAluno;
+	}
+
+	public void cadastroAluno() {
+
+	}
+
 }

@@ -10,62 +10,59 @@ package Entidade;
  * @author Maryelen
  */
 public class Disciplina {
-    
-    String nome;
-    double cargaHoraria;
-    int codigo;
-    int numeroVagas;
-    int semestre;
-    int ano;
 
-    public int getCodigo() {
-        return codigo;
-    }
+	String nome;
+	double cargaHoraria;
+	int codigo;
+	int numeroVagas;
+	int semestre;
+	int ano;
 
-    public void setCodigo(int codigo) {
-        this.codigo = codigo;
-    }
+	public int getCodigo() {
+		return codigo;
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public double getCargaHoraria() {
-        return cargaHoraria;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setCargaHoraria(double cargaHoraria) {
-        this.cargaHoraria = cargaHoraria;
-    }
+	public double getCargaHoraria() {
+		return cargaHoraria;
+	}
 
-    public int getNumeroVagas() {
-        return numeroVagas;
-    }
+	public void setCargaHoraria(double cargaHoraria) {
+		this.cargaHoraria = cargaHoraria;
+	}
 
-    public void setNumeroVagas(int numeroVagas) {
-        this.numeroVagas = numeroVagas;
-    }
+	public int getNumeroVagas() {
+		return numeroVagas;
+	}
 
-    public int getSemestre() {
-        return semestre;
-    }
+	public void setNumeroVagas(int numeroVagas) {
+		this.numeroVagas = numeroVagas;
+	}
 
-    public void setSemestre(int semestre) {
-        this.semestre = semestre;
-    }
+	public int getSemestre() {
+		return semestre;
+	}
 
-    public int getAno() {
-        return ano;
-    }
+	public void setSemestre(int semestre) {
+		this.semestre = semestre;
+	}
 
-    public void setAno(int ano) {
-        this.ano = ano;
-    }
-    
-    
-    
+	public int getAno() {
+		return ano;
+	}
+
+	public void setAno(int ano) {
+		this.ano = ano;
+	}
 }

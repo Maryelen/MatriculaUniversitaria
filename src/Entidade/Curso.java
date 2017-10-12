@@ -12,43 +12,42 @@ import java.util.ArrayList;
  * @author Maryelen
  */
 public class Curso {
-    
-    String nome;
-    String unidade;
-    Disciplina disciplina;
-    ArrayList<Disciplina> listaDisciplinasCurso;
 
-    public String getNome() {
-        return nome;
-    }
+	String nome;
+	String unidade;
+	Disciplina disciplina;
+	ArrayList<Disciplina> listaDisciplinasCurso;
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public String getUnidade() {
-        return unidade;
-    }
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
 
-    public void setUnidade(String unidade) {
-        this.unidade = unidade;
-    }
+	public String getUnidade() {
+		return unidade;
+	}
 
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
+	public void setUnidade(String unidade) {
+		this.unidade = unidade;
+	}
 
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
-    }
+	public Disciplina getDisciplina() {
+		return disciplina;
+	}
 
-    public ArrayList<Disciplina> getListaDisciplinasCurso() {
-        return listaDisciplinasCurso;
-    }
+	public void setDisciplina(Disciplina disciplina) {
+		this.disciplina = disciplina;
+	}
 
-    public void setListaDisciplinasCurso(ArrayList<Disciplina> listaDisciplinasCurso) {
-        this.listaDisciplinasCurso = listaDisciplinasCurso;
-    }
-    
-    
+	public ArrayList<Disciplina> getListaDisciplinasCurso() {
+		return listaDisciplinasCurso;
+	}
+
+	public void setListaDisciplinasCurso(ArrayList<Disciplina> listaDisciplinasCurso) {
+		this.listaDisciplinasCurso = listaDisciplinasCurso;
+	}
+
 }

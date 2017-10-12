@@ -14,6 +14,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import Controle.ControleDeCurso;
 import Controle.ControlePrincipal;
 
 import javax.swing.JList;
@@ -28,6 +29,7 @@ public class CadastroDeCurso extends JFrame {
 	private JTextField txtUnidade;
 	
 	public CadastroDeCurso() {
+		
 		
 		JPanel panel = new JPanel();
 		panel.setMaximumSize(new Dimension(400, 400));
@@ -44,18 +46,29 @@ public class CadastroDeCurso extends JFrame {
 		txtUnidade = new JTextField();
 		txtUnidade.setColumns(10);
 		
+		JLabel lblCadastroDeCurso = new JLabel("Cadastro de Curso");
+		
+		JLabel lblVincularDisciplina = new JLabel("Vincular Disciplina:");
+		JScrollPane scrollPane = new JScrollPane();
+		
+		JList<Object> listDisciplinasCurso = new JList<Object>(ControlePrincipal.VetorDisciplinas());
+		scrollPane.setViewportView(listDisciplinasCurso);
+		
+		listDisciplinasCurso.setVisibleRowCount(5);
+		listDisciplinasCurso.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	
+		
 		JButton button = new JButton("Voltar");
 		
 		JButton button_1 = new JButton("Salvar");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ControleDeCurso controleDeCurso = new ControleDeCurso();			
+				controleDeCurso.CadastrarCurso(listDisciplinasCurso, txtNome, txtUnidade);
 			}
 		});
 		
-		JLabel lblCadastroDeCurso = new JLabel("Cadastro de Curso");
 		
-		JLabel lblVincularDisciplina = new JLabel("Vincular Disciplina:");
-		JScrollPane scrollPane = new JScrollPane();
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -115,11 +128,7 @@ public class CadastroDeCurso extends JFrame {
 					.addGap(67))
 		);
 		
-		JList<Object> listDisciplinas = new JList<Object>(ControlePrincipal.VetorDisciplinas());
-		scrollPane.setViewportView(listDisciplinas);
-		
-		listDisciplinas.setVisibleRowCount(5);
-		listDisciplinas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		panel.setLayout(gl_panel);
+		
 	}
 }
