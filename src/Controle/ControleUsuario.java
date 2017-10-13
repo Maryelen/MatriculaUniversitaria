@@ -26,6 +26,10 @@ public class ControleUsuario {
 		if (cmbTipoUsuario.getSelectedIndex() <= 0) {
 			resumoDeValidacoes += String.format("Campo %s Obrigatório!", cmbTipoUsuario.getName()) + "\n";
 		}
+		
+		if (txtMatricula.getText().isEmpty()) {
+			resumoDeValidacoes += String.format("Campo de Matrícula Obrigatório!") + "\n";
+		}
 
 		// Valida se tem mais de 5 disciplinas selecionadas
 		if (listaDisciplinas.getSelectedValuesList().size() > 5) {
@@ -33,7 +37,15 @@ public class ControleUsuario {
 			resumoDeValidacoes += "Não é possível selecionar mais de 5 disciplinas! \n";
 
 		}
-
+		
+		String resumoValidacaoMatriculaAluno = validarMatriculaAluno(txtMatricula);
+		
+		if(resumoValidacaoMatriculaAluno.isEmpty()){
+			resumoDeValidacoes += validarMatriculaProfessor(txtMatricula);
+		} else {
+			resumoDeValidacoes += resumoValidacaoMatriculaAluno;
+		}
+		 
 		if (!resumoDeValidacoes.isEmpty()) {
 			JOptionPane.showMessageDialog(null, resumoDeValidacoes);
 
@@ -59,7 +71,26 @@ public class ControleUsuario {
 			}
 		}
 	}
-
+//usar esse método para validar cpf e rg (dados únicos)
+	private String validarMatriculaAluno(JTextField txtMatricula) {
+		for(Aluno aluno : ControlePrincipal.listaAlunos){
+			
+			if(String.valueOf(aluno.getMatricula()).equals(txtMatricula.getText())) {
+				return "Matricula já existe para outro usuário! \n";
+			}
+		}
+		return "";
+	}
+	
+	private String validarMatriculaProfessor(JTextField txtMatricula) {
+		for(Professor professor : ControlePrincipal.listaProfessores){
+			
+			if(String.valueOf(professor.getMatricula()).equals(txtMatricula.getText())) {
+				return "Matricula já existe para outro usuário! \n";
+			}
+		}
+		return "";
+	}
 	public ArrayList<Disciplina> getDisciplinasSelecionadas(List<Object> listaDisciplinasSelecionadas) {
 
 		ArrayList<Disciplina> disciplinasSelecionadas = new ArrayList<>();

@@ -4,21 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import Controle.ControlePrincipal;
 import Controle.ControleUsuario;
-import Entidade.Aluno;
-import Entidade.Constantes;
-import Entidade.Disciplina;
-import Entidade.Professor;
 import javax.swing.ListSelectionModel;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
@@ -42,7 +36,7 @@ public class CadastroDeUsuario extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JComboBox cmbCurso;
+	private JComboBox<String> cmbCurso;
 	private JLabel lblCurso;
 
 	public void IniciarControles() {
@@ -61,9 +55,9 @@ public class CadastroDeUsuario extends JFrame {
 		controleUsuario = new ControleUsuario();
 		IniciarControles();
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(500, 376);
+		this.setSize(500, 485);
 		getContentPane().setLayout(null);
-		pnlCadastroUsuario.setBounds(0, 0, 482, 329);
+		pnlCadastroUsuario.setBounds(0, 0, 482, 438);
 		pnlCadastroUsuario.setMaximumSize(new Dimension(500, 376));
 		getContentPane().add(pnlCadastroUsuario);
 		lblMatricula.setText("Matrícula:");
@@ -73,7 +67,7 @@ public class CadastroDeUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		cmbTipoUsuario.setModel(new DefaultComboBoxModel(new String[] { "", "Aluno", "Professor" }));
+		cmbTipoUsuario.setModel(new DefaultComboBoxModel<String>(new String[] { "", "Aluno", "Professor" }));
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				controleUsuario.CadastrarUsuario(cmbTipoUsuario, listaDisciplinas, txtMatricula, txtNomeUsuario);
@@ -85,7 +79,7 @@ public class CadastroDeUsuario extends JFrame {
 		lblVincularDisciplina = new JLabel("Vincular disciplina:");
 		txtNomeUsuario.setColumns(10);
 		
-		cmbCurso = new JComboBox();
+		cmbCurso = new JComboBox<String>();
 		cmbCurso.setModel(new DefaultComboBoxModel<>(controleUsuario.getCursos()) );
 		
 		lblCurso = new JLabel("Curso:");
