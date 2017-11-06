@@ -11,6 +11,7 @@ package Entidade;
  */
 public class Disciplina {
 
+	int idDisciplina;
 	String nome;
 	double cargaHoraria;
 	int codigo;
@@ -65,4 +66,14 @@ public class Disciplina {
 	public void setAno(int ano) {
 		this.ano = ano;
 	}
+
+	public int getIdDisciplina() {
+		return idDisciplina;
+	}
+
+	public void setIdDisciplina(int idDisciplina) {
+		this.idDisciplina = idDisciplina;
+	}
+	
+	
 }

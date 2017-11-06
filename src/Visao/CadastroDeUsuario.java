@@ -11,10 +11,19 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Component;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import Controle.ControleDeCurso;
 import Controle.ControlePrincipal;
 import Controle.ControleUsuario;
+import Entidade.Curso;
+import Entidade.Disciplina;
+import Entidade.Unidade;
+import Util.KeySelectionRenderer;
+
 import javax.swing.ListSelectionModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
@@ -22,33 +31,39 @@ import java.awt.Dimension;
 public class CadastroDeUsuario extends JFrame {
 	ControleUsuario controleUsuario;
 	private JPanel pnlCadastroUsuario;
-	private JList<Object> listaDisciplinas;
+	private JList<Disciplina> listaDisciplinas;
 	private JLabel lblMatricula;
 	private JLabel lblTipoUsuario;
 	private JLabel lblCadastroUsuario;
+	private JLabel lblCurso;
 	private JLabel lblVincularDisciplina;
 	private JLabel lblNome;
 	private JTextField txtMatricula;
 	private JTextField txtNomeUsuario;
 	private JComboBox<String> cmbTipoUsuario;
+	private JComboBox<Curso> cmbCurso;
 	private JButton btnSalvar;
+	private JButton btnVoltar;
+	private Curso curso;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private JComboBox<String> cmbCurso;
-	private JLabel lblCurso;
 
 	public void IniciarControles() {
 		pnlCadastroUsuario = new JPanel();
 		lblMatricula = new JLabel();
-		lblTipoUsuario = new JLabel();
-		lblCadastroUsuario = new JLabel();
+		lblTipoUsuario = new JLabel("Tipo de Usuário:");
+		lblCadastroUsuario = new JLabel("Cadastro de Usuário");
 		lblNome = new JLabel("Nome:");
+		lblVincularDisciplina = new JLabel("Vincular disciplina:");
+		lblCurso = new JLabel("Curso:");
 		cmbTipoUsuario = new JComboBox<String>();
+		cmbCurso = new JComboBox<Curso>();
 		txtMatricula = new JTextField();
 		txtNomeUsuario = new JTextField();
-		btnSalvar = new JButton();
+		btnSalvar = new JButton("Salvar");
+	    btnVoltar = new JButton("Voltar");
 	}
 
 	public CadastroDeUsuario() {
@@ -61,40 +76,99 @@ public class CadastroDeUsuario extends JFrame {
 		pnlCadastroUsuario.setMaximumSize(new Dimension(500, 376));
 		getContentPane().add(pnlCadastroUsuario);
 		lblMatricula.setText("Matrícula:");
-		lblTipoUsuario.setText("Tipo de Usuário:");
 		cmbTipoUsuario.setName("Tipo de Usuário");
+		
 		cmbTipoUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		cmbTipoUsuario.setModel(new DefaultComboBoxModel<String>(new String[] { "", "Aluno", "Professor" }));
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				controleUsuario.CadastrarUsuario(cmbTipoUsuario, listaDisciplinas, txtMatricula, txtNomeUsuario);
-			}
-		});
-		btnSalvar.setText("Salvar");
+
 		lblCadastroUsuario.setAlignmentX(Component.CENTER_ALIGNMENT);
-		lblCadastroUsuario.setText("Cadastro de Usuário");
-		lblVincularDisciplina = new JLabel("Vincular disciplina:");
 		txtNomeUsuario.setColumns(10);
 		
-		cmbCurso = new JComboBox<String>();
-		cmbCurso.setModel(new DefaultComboBoxModel<>(controleUsuario.getCursos()) );
+		for(Curso curso : ControlePrincipal.VectorCursos())
+		{
+			cmbCurso.addItem(curso);
+		}
 		
-		lblCurso = new JLabel("Curso:");
-		listaDisciplinas = new JList<Object>(ControlePrincipal.VetorDisciplinas());
-		listaDisciplinas.setVisibleRowCount(5);
-		listaDisciplinas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		KeySelectionRenderer renderer = new KeySelectionRenderer(cmbCurso)
+		{
+			@Override
+			public String getDisplayValue(Object value){
+				
+			Curso curso = (Curso) value;
+			return curso.getNome();
+			
+			}
+		};
+		
+//		cmbCurso.setModel(new DefaultComboBoxModel<>(controleUsuario.getCursos()) );
+		
+		if(cmbCurso.getSelectedItem() != null)
+		{
+			listaDisciplinas = new JList<Disciplina>(ControleDeCurso.pegarDisciplinasPeloCurso(((Curso)cmbCurso.getSelectedItem()).getIdCurso()));
+			listaDisciplinas.setVisibleRowCount(5);
+			listaDisciplinas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+			listaDisciplinas.setCellRenderer(new DefaultListCellRenderer() {
+	            @Override
+	            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	                if (renderer instanceof JLabel && value instanceof Disciplina) {
+	                    
+	                    ((JLabel) renderer).setText(((Disciplina) value).getNome());
+	                }
+	                return renderer;
+	            }
+	        });
+		}
+		else
+		{
+			listaDisciplinas = new JList<Disciplina>();
+			listaDisciplinas.setVisibleRowCount(5);
+			listaDisciplinas.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		}
+		
+		cmbCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Curso> comboBox = (JComboBox<Curso>)e.getSource();
+				curso = (Curso)comboBox.getSelectedItem();
+				
+				listaDisciplinas.setListData(ControleDeCurso.pegarDisciplinasPeloCurso(curso.getIdCurso()));
+			}
+		});
+		
+		btnSalvar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controleUsuario.CadastrarUsuario(cmbTipoUsuario, 
+						listaDisciplinas.getSelectedValuesList(), 
+						txtMatricula.getText(), 
+						txtNomeUsuario.getText(), 
+						curso);
+			}
+		});
+	
+//		btnVoltar.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//			}
+//		});
+
 		GroupLayout gl_pnlCadastroUsuario = new GroupLayout(pnlCadastroUsuario);
 		gl_pnlCadastroUsuario.setHorizontalGroup(
 			gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
 					.addGap(156)
-					.addComponent(lblCadastroUsuario, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE)
+					.addComponent(lblCadastroUsuario, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
 					.addGap(155))
-				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
-					.addContainerGap(381, Short.MAX_VALUE)
+				.addGroup(Alignment.TRAILING, gl_pnlCadastroUsuario.createSequentialGroup()
+					.addGap(64)
+					.addComponent(btnVoltar, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
 					.addComponent(btnSalvar)
 					.addGap(38))
 				.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
@@ -113,10 +187,10 @@ public class CadastroDeUsuario extends JFrame {
 					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
 							.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
-								.addComponent(cmbCurso, 0, 264, Short.MAX_VALUE)
-								.addComponent(txtMatricula, 247, 264, Short.MAX_VALUE)
-								.addComponent(cmbTipoUsuario, 0, 264, Short.MAX_VALUE)
-								.addComponent(txtNomeUsuario, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+								.addComponent(cmbCurso, 0, 247, Short.MAX_VALUE)
+								.addComponent(txtMatricula, 247, 247, Short.MAX_VALUE)
+								.addComponent(cmbTipoUsuario, 0, 247, Short.MAX_VALUE)
+								.addComponent(txtNomeUsuario, GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE))
 							.addGap(95))
 						.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
 							.addComponent(listaDisciplinas, GroupLayout.PREFERRED_SIZE, 272, GroupLayout.PREFERRED_SIZE)
@@ -147,12 +221,14 @@ public class CadastroDeUsuario extends JFrame {
 					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
 							.addGap(18)
-							.addComponent(listaDisciplinas, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
-							.addGap(87)
-							.addComponent(btnSalvar))
+							.addComponent(listaDisciplinas, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_pnlCadastroUsuario.createSequentialGroup()
 							.addGap(29)
 							.addComponent(lblVincularDisciplina)))
+					.addGap(87)
+					.addGroup(gl_pnlCadastroUsuario.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnSalvar)
+						.addComponent(btnVoltar))
 					.addContainerGap())
 		);
 		pnlCadastroUsuario.setLayout(gl_pnlCadastroUsuario);

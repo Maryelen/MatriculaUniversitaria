@@ -13,9 +13,9 @@ import java.util.ArrayList;
  */
 public class Curso {
 
+	int idCurso;
 	String nome;
-	String unidade;
-	Disciplina disciplina;
+	Unidade unidade;
 	ArrayList<Disciplina> listaDisciplinasCurso;
 
 	public String getNome() {
@@ -26,22 +26,6 @@ public class Curso {
 		this.nome = nome;
 	}
 
-	public String getUnidade() {
-		return unidade;
-	}
-
-	public void setUnidade(String unidade) {
-		this.unidade = unidade;
-	}
-
-	public Disciplina getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplina disciplina) {
-		this.disciplina = disciplina;
-	}
-
 	public ArrayList<Disciplina> getListaDisciplinasCurso() {
 		return listaDisciplinasCurso;
 	}
@@ -50,4 +34,22 @@ public class Curso {
 		this.listaDisciplinasCurso = listaDisciplinasCurso;
 	}
 
+	public Unidade getUnidade() {
+		return unidade;
+	}
+
+	public void setUnidade(Unidade unidade) {
+		this.unidade = unidade;
+	}
+
+	public int getIdCurso() {
+		return idCurso;
+	}
+
+	public void setIdCurso(int idCurso) {
+		this.idCurso = idCurso;
+	}
+
+	
+	
 }

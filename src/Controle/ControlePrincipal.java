@@ -1,11 +1,17 @@
 package Controle;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
+import Dao.CursoDAO;
+import Dao.DAOException;
+import Dao.DisciplinaDAO;
+import Dao.UnidadeDAO;
 import Entidade.Aluno;
 import Entidade.Curso;
 import Entidade.Disciplina;
 import Entidade.Professor;
+import Entidade.Unidade;
 import Visao.TelaInicial;
 
 public class ControlePrincipal {
@@ -13,14 +19,33 @@ public class ControlePrincipal {
 	public static ArrayList<Disciplina> listaDisciplinas = new ArrayList<>();
 	public static ArrayList<Aluno> listaAlunos = new ArrayList<>();
 	public static ArrayList<Professor> listaProfessores = new ArrayList<>();
-	public static ArrayList<Curso> listaDisciplinasCurso = new ArrayList<>();
+	public static ArrayList<Curso> listaCursos = new ArrayList<>();
+	public static ArrayList<Unidade> listaUnidades = new ArrayList<>();
+	private static UnidadeDAO unidadeDAO = new UnidadeDAO();	
+	private static CursoDAO cursoDAO = new CursoDAO(); 
+	private static DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 
-	private static ArrayList<Curso> getListaDisciplinasCurso() {
-		return listaDisciplinasCurso;
+	private static ArrayList<Curso> getListaCursos() {
+		try {
+			return cursoDAO.listaCursos();
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	private static ArrayList<Disciplina> getListaDisciplinas() {
-		return listaDisciplinas;
+	try {
+			
+			return disciplinaDAO.listaDisciplinas();
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	private static ArrayList<Professor> getListaProfessores() {
@@ -33,17 +58,51 @@ public class ControlePrincipal {
 
 	}
 
-	public static String[] VetorDisciplinas() {
-
-		String names[] = new String[getListaDisciplinas().size()];
-
-		int count = 0;
-		for (Disciplina disciplina : getListaDisciplinas()) {
-			names[count] = disciplina.getNome();
-			count++;
+	public static ArrayList<Unidade> getListaUnidades() {
+		
+		try {
+			
+			return unidadeDAO.listaUnidades();
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		return names;
+		return null;
+	}
+	
+	public static Vector<Curso> VectorCursos() {
+
+		Vector<Curso> cursos = new Vector<>();
+		
+		for (Curso curso : getListaCursos()) {
+			cursos.add(curso);
+		}
+
+		return cursos;
+	}
+	
+	public static Vector<Disciplina> VectorDisciplinas() {
+
+		Vector<Disciplina> disciplinas = new Vector<>();
+
+		for (Disciplina disciplina : getListaDisciplinas()) {
+			disciplinas.add(disciplina);
+		}
+
+		return disciplinas;
+	}
+	
+	public static Vector<Unidade> VectorUnidades() {
+		
+		Vector<Unidade> unidades = new Vector<>();
+
+		for (Unidade unidade : getListaUnidades()) {
+			unidades.add(unidade);
+		}
+
+		return unidades;
 	}
 
 	public static Object[] VetorObjetosEncontrados(ArrayList<Object> objetosEncontrados) {
@@ -66,17 +125,17 @@ public class ControlePrincipal {
 
 		return dadosDosObjetosEncontrados;
 	}
-
-	public static String[] VetorCursos() {
-
-		String names[] = new String[getListaDisciplinasCurso().size()];
-
-		int count = 0;
-		for (Curso curso : getListaDisciplinasCurso()) {
-			names[count] = curso.getNome();
-			count++;
-		}
-
-		return names;
-	}
+	
+	// public static String[] VetorCursos() {
+//
+//		String names[] = new String[getListaCursos().size()];
+//
+//		int count = 0;
+//		for (Curso curso : getListaCursos()) {
+//			names[count] = curso.getNome();
+//			count++;
+//		}
+//
+//		return names;
+//	}
 }

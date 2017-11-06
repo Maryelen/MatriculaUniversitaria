@@ -5,17 +5,25 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import Controle.ControleDeCurso;
 import Controle.ControlePrincipal;
+import Entidade.Disciplina;
+import Entidade.Unidade;
+import Util.KeySelectionRenderer;
 
 import javax.swing.JList;
 import java.awt.event.ActionListener;
@@ -26,11 +34,11 @@ public class CadastroDeCurso extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	private JTextField txtNome;
-	private JTextField txtUnidade;
+	private JComboBox<Unidade> cmbUnidade;
+	private Unidade unidade;
 	
 	public CadastroDeCurso() {
-		
-		
+
 		JPanel panel = new JPanel();
 		panel.setMaximumSize(new Dimension(400, 400));
 		getContentPane().add(panel, BorderLayout.NORTH);
@@ -43,28 +51,68 @@ public class CadastroDeCurso extends JFrame {
 		txtNome = new JTextField();
 		txtNome.setColumns(10);
 		
-		txtUnidade = new JTextField();
-		txtUnidade.setColumns(10);
-		
+		cmbUnidade  = new JComboBox<Unidade>();
+
 		JLabel lblCadastroDeCurso = new JLabel("Cadastro de Curso");
 		
+		/////////	INÍCIO DISCIPLINAS //////////	
 		JLabel lblVincularDisciplina = new JLabel("Vincular Disciplina:");
-		JScrollPane scrollPane = new JScrollPane();
+		JScrollPane scrollPaneDisciplinasCurso = new JScrollPane();
 		
-		JList<Object> listDisciplinasCurso = new JList<Object>(ControlePrincipal.VetorDisciplinas());
-		scrollPane.setViewportView(listDisciplinasCurso);
+		JList<Disciplina> listDisciplinasCurso = new JList<Disciplina>(ControlePrincipal.VectorDisciplinas());
+		scrollPaneDisciplinasCurso.setViewportView(listDisciplinasCurso);
 		
 		listDisciplinasCurso.setVisibleRowCount(5);
 		listDisciplinasCurso.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-	
+		
+		listDisciplinasCurso.setCellRenderer(new DefaultListCellRenderer() {
+	            @Override
+	            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+	                if (renderer instanceof JLabel && value instanceof Disciplina) {
+	                    
+	                    ((JLabel) renderer).setText(((Disciplina) value).getNome());
+	                }
+	                return renderer;
+	            }
+	        });
+		/////////	FIM DISCIPLINAS //////////	
+		
+		
+		///////// INÍCIO UNIDADES //////////	
+		for(Unidade unidade : ControlePrincipal.VectorUnidades())
+		{
+			cmbUnidade.addItem(unidade);
+		}
+		
+		KeySelectionRenderer renderer = new KeySelectionRenderer(cmbUnidade)
+		{
+			@Override
+			public String getDisplayValue(Object value){
+				
+			Unidade unidade = (Unidade) value;
+			return unidade.getNome();
+			
+			}
+		};
+		
+		unidade = (Unidade)cmbUnidade.getSelectedItem();
+		
+		cmbUnidade.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JComboBox<Unidade> comboBox = (JComboBox<Unidade>)e.getSource();
+				unidade = (Unidade)comboBox.getSelectedItem();
+			}
+		});
+		/////////	FIM UNIDADES //////////	
 		
 		JButton button = new JButton("Voltar");
-		
 		JButton button_1 = new JButton("Salvar");
+		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ControleDeCurso controleDeCurso = new ControleDeCurso();			
-				controleDeCurso.CadastrarCurso(listDisciplinasCurso, txtNome, txtUnidade);
+				controleDeCurso.CadastrarCurso(listDisciplinasCurso, txtNome, unidade);
 			}
 		});
 		
@@ -84,19 +132,18 @@ public class CadastroDeCurso extends JFrame {
 						.addGroup(gl_panel.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(button)))
-					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING, false)
 						.addGroup(gl_panel.createSequentialGroup()
-							.addGap(31)
-							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(gl_panel.createSequentialGroup()
 									.addGap(10)
 									.addComponent(lblCadastroDeCurso))
+								.addComponent(scrollPaneDisciplinasCurso, GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
 								.addComponent(txtNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtUnidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 177, GroupLayout.PREFERRED_SIZE))
+								.addComponent(cmbUnidade, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 							.addGap(302))
-						.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(gl_panel.createSequentialGroup()
 							.addComponent(button_1)
 							.addGap(168))))
 		);
@@ -112,20 +159,19 @@ public class CadastroDeCurso extends JFrame {
 					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_panel.createSequentialGroup()
 							.addGap(5)
-							.addComponent(lblUnidade)
-							.addGap(18)
-							.addComponent(lblVincularDisciplina))
+							.addComponent(lblUnidade))
 						.addGroup(gl_panel.createSequentialGroup()
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(txtUnidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(cmbUnidade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(scrollPaneDisciplinasCurso, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblVincularDisciplina))))
 					.addPreferredGap(ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(button)
 						.addComponent(button_1))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGap(67))
+					.addContainerGap())
 		);
 		
 		panel.setLayout(gl_panel);

@@ -9,6 +9,11 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
+import Dao.AlunoDAO;
+import Dao.CursoDAO;
+import Dao.CursoDisciplinaDAO;
+import Dao.DAOException;
+import Dao.UsuarioCursoDisciplinaDAO;
 import Entidade.Aluno;
 import Entidade.Constantes;
 import Entidade.Curso;
@@ -17,8 +22,8 @@ import Entidade.Professor;
 
 public class ControleUsuario {
 
-	public void CadastrarUsuario(JComboBox<String> cmbTipoUsuario, JList<Object> listaDisciplinas,
-			JTextField txtMatricula, JTextField txtNomeUsuario) {
+	public void CadastrarUsuario(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas, String matricula,
+			String nomeUsuario, Curso curso) {
 
 		String resumoDeValidacoes = "";
 
@@ -26,26 +31,30 @@ public class ControleUsuario {
 		if (cmbTipoUsuario.getSelectedIndex() <= 0) {
 			resumoDeValidacoes += String.format("Campo %s Obrigatório!", cmbTipoUsuario.getName()) + "\n";
 		}
-		
-		if (txtMatricula.getText().isEmpty()) {
+
+		if (matricula.isEmpty()) {
 			resumoDeValidacoes += String.format("Campo de Matrícula Obrigatório!") + "\n";
 		}
 
+		if (curso.getIdCurso() <= 0) {
+			resumoDeValidacoes += String.format("Campo Curso Obrigatório!") + "\n";
+		}
+
 		// Valida se tem mais de 5 disciplinas selecionadas
-		if (listaDisciplinas.getSelectedValuesList().size() > 5) {
+		if (listaDisciplinas.size() > 5) {
 
 			resumoDeValidacoes += "Não é possível selecionar mais de 5 disciplinas! \n";
 
 		}
-		
-		String resumoValidacaoMatriculaAluno = validarMatriculaAluno(txtMatricula);
-		
-		if(resumoValidacaoMatriculaAluno.isEmpty()){
-			resumoDeValidacoes += validarMatriculaProfessor(txtMatricula);
+
+		String resumoValidacaoMatriculaAluno = validarMatriculaAluno(matricula);
+
+		if (resumoValidacaoMatriculaAluno.isEmpty()) {
+			resumoDeValidacoes += validarMatriculaProfessor(matricula);
 		} else {
 			resumoDeValidacoes += resumoValidacaoMatriculaAluno;
 		}
-		 
+
 		if (!resumoDeValidacoes.isEmpty()) {
 			JOptionPane.showMessageDialog(null, resumoDeValidacoes);
 
@@ -54,56 +63,82 @@ public class ControleUsuario {
 			if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioAluno) {
 				Aluno aluno = new Aluno();
 
-				aluno.setNome(txtNomeUsuario.getText());
-				aluno.setMatricula(Integer.parseInt(txtMatricula.getText()));
+				aluno.setNome(nomeUsuario);
+				aluno.setMatricula(Integer.parseInt(matricula));
+				ArrayList<Curso> listaCursos = new ArrayList<Curso>();
+				listaCursos.add(curso);
+				aluno.setListaCursos(listaCursos);
+				aluno.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas));
 
-				aluno.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas.getSelectedValuesList()));
+				AlunoDAO alunoDAO = new AlunoDAO();
+
+				try {
+
+					int idUsuario = alunoDAO.inserirAluno(aluno);
+					CursoDisciplinaDAO cursoDisciplinaDAO = new CursoDisciplinaDAO();
+
+					String ids[] = new String[aluno.getListaDisciplinas().size()];
+//					StringBuilder param = new StringBuilder();
+					int count = 0;
+					for (Disciplina disciplina : aluno.getListaDisciplinas()) {
+
+						ids[count] = Integer.toString(disciplina.getIdDisciplina());
+//						param.append("?,");
+						count++;
+					}
+
+					ArrayList<Integer> idsCursoDisciplina = cursoDisciplinaDAO.listaIdsDoRelacionamentoCursoDisciplina(
+							curso.getIdCurso(), 
+//							param.deleteCharAt(param.length() - 1).toString(), 
+							ids);
+
+					UsuarioCursoDisciplinaDAO usuarioCursoDisciplinaDAO = new UsuarioCursoDisciplinaDAO();
+					usuarioCursoDisciplinaDAO.inserirRelacionamentoUsuarioDisciplinasCurso(idUsuario,
+							idsCursoDisciplina);
+
+				} catch (DAOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
 				ControlePrincipal.listaAlunos.add(aluno);
 
 			} else if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioProfessor) {
 				Professor professor = new Professor();
-				professor.setNome(txtNomeUsuario.getText());
-				professor.setMatricula(Integer.parseInt(txtMatricula.getText()));
-				professor.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas.getSelectedValuesList()));
+				professor.setNome(nomeUsuario);
+				professor.setMatricula(Integer.parseInt(matricula));
+				professor.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas));
 
 				ControlePrincipal.listaProfessores.add(professor);
 
 			}
 		}
 	}
-//usar esse método para validar cpf e rg (dados únicos)
-	private String validarMatriculaAluno(JTextField txtMatricula) {
-		for(Aluno aluno : ControlePrincipal.listaAlunos){
-			
-			if(String.valueOf(aluno.getMatricula()).equals(txtMatricula.getText())) {
+
+	// usar esse método para validar cpf e rg (dados únicos)
+	private String validarMatriculaAluno(String matricula) {
+		for (Aluno aluno : ControlePrincipal.listaAlunos) {
+
+			if (String.valueOf(aluno.getMatricula()).equals(matricula)) {
 				return "Matricula já existe para outro usuário! \n";
 			}
 		}
 		return "";
 	}
-	
-	private String validarMatriculaProfessor(JTextField txtMatricula) {
-		for(Professor professor : ControlePrincipal.listaProfessores){
-			
-			if(String.valueOf(professor.getMatricula()).equals(txtMatricula.getText())) {
+
+	private String validarMatriculaProfessor(String matricula) {
+		for (Professor professor : ControlePrincipal.listaProfessores) {
+
+			if (String.valueOf(professor.getMatricula()).equals(matricula)) {
 				return "Matricula já existe para outro usuário! \n";
 			}
 		}
 		return "";
 	}
-	public ArrayList<Disciplina> getDisciplinasSelecionadas(List<Object> listaDisciplinasSelecionadas) {
 
-		ArrayList<Disciplina> disciplinasSelecionadas = new ArrayList<>();
-		for (Object disciplinaSelecionada : listaDisciplinasSelecionadas) {
-			for (Disciplina disciplina : ControlePrincipal.listaDisciplinas) {
+	public ArrayList<Disciplina> getDisciplinasSelecionadas(List<Disciplina> listaDisciplinasSelecionadas) {
 
-				if (disciplina.getNome().equals(disciplinaSelecionada)) {
-					disciplinasSelecionadas.add(disciplina);
-					break;
-				}
-			}
-		}
-		return disciplinasSelecionadas;
+		return (ArrayList<Disciplina>) listaDisciplinasSelecionadas;
 	}
 
 	public void validaPesquisaProfessor(JTextField textMatricula, JTextField txtNome,
@@ -148,16 +183,5 @@ public class ControleUsuario {
 
 			objetosEncontrados.add(aluno);
 		}
-	}
-
-	public Vector<String> getCursos() {
-
-		Vector<String> vector = new Vector<>();
-		for (Curso curso : ControlePrincipal.listaDisciplinasCurso) {
-
-			vector.add(curso.getNome());
-		}
-
-		return vector;
 	}
 }

@@ -101,8 +101,8 @@ public class CadastroDeDisciplina extends JFrame {
 
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleDisciplina.cadastrarDisciplina(txtAno, txtNome, txtCodigo, txtCargaHoraria, txtNumDeVagas,
-						txtSemestre);
+				controleDisciplina.cadastrarDisciplina(txtAno.getText(), txtNome.getText(), txtCodigo.getText(), 
+						txtCargaHoraria.getText(), txtNumDeVagas.getText(), txtSemestre.getText());
 			}
 		});
 
