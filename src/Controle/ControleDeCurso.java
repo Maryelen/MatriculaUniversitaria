@@ -22,7 +22,7 @@ public class ControleDeCurso {
 
 		// Valida se extá informando o Nome do Curso
 		if (txtNome.getText().isEmpty()) {
-			resumoDeValidacoes += String.format("Campo Obrigatório!");
+			resumoDeValidacoes += String.format("Campo Nome Obrigatório!");
 		}
 
 		if (listaDisciplinasCurso.getSelectedValuesList() == null) {

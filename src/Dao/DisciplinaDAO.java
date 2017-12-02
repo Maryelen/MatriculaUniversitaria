@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import Entidade.Disciplina;
 import Entidade.Unidade;
+import Entidade.Usuario;
 
 public class DisciplinaDAO {
 
@@ -70,6 +71,82 @@ public class DisciplinaDAO {
 			}
 			
 			return listaDisciplinas;
+			
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+	
+	public int getDisciplinaPeloCodigo(int codigoDisciplina) throws DAOException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT COUNT(ID_DISCIPLINA) FROM DISCIPLINA WHERE CODIGO_DISCIPLINA= ?";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, codigoDisciplina);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				return rs.getInt("COUNT");		
+			}
+			
+			return 0;
+			
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+	
+	public int getDisciplinaPeloNome(String nomeDisciplina) throws DAOException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT COUNT(ID_DISCIPLINA) FROM DISCIPLINA WHERE NM_DISCIPLINA= ?";
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, nomeDisciplina);
+			rs = ps.executeQuery();
+			
+			while (rs.next()) {
+				return rs.getInt("COUNT");		
+			}
+			
+			return 0;
 			
 		} catch (SQLException e) {
 			throw new DAOException("Erro ao listar o conteúdo" + e);

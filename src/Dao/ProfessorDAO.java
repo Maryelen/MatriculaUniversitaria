@@ -5,9 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Entidade.Aluno;
+import Entidade.Professor;
 
-public class AlunoDAO {
-
+public class ProfessorDAO {
 	
+
 }
