@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Usuario {
 
+	private int idUsuario;
 	private String nome;
 	private int matricula;
 	private ArrayList<Disciplina> ListaDisciplinas = new ArrayList<>();
@@ -52,5 +53,13 @@ public class Usuario {
 
 	public void setIdTipoUsuario(int idTipoUsuario) {
 		this.idTipoUsuario = idTipoUsuario;
+	}
+
+	public int getIdUsuario() {
+		return idUsuario;
+	}
+
+	public void setIdUsuario(int idUsuario) {
+		this.idUsuario = idUsuario;
 	}
 }

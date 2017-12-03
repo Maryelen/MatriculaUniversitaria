@@ -17,6 +17,7 @@ import Entidade.Constantes;
 import Entidade.Curso;
 import Entidade.Disciplina;
 import Entidade.Professor;
+import Entidade.Usuario;
 
 public class ControleUsuario {
 
@@ -29,7 +30,7 @@ public class ControleUsuario {
 		
 		int idUsuario = 0;
 
-		resumoDeValidacoes = resumoDeValidacoes(cmbTipoUsuario, listaDisciplinas, curso, resumoDeValidacoes);
+		resumoDeValidacoes = resumoDeValidacoes(cmbTipoUsuario, listaDisciplinas, nomeUsuario, curso, resumoDeValidacoes);
 
 		String resumoValidacaoMatriculaAluno = validarMatriculaAluno(matricula);
 
@@ -91,7 +92,7 @@ public class ControleUsuario {
 			} else if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioProfessor) {
 				Professor professor = new Professor();
 				professor.setNome(nomeUsuario);
-				professor.setMatricula(Integer.parseInt(matricula));
+//				professor.setMatricula(Integer.parseInt(matricula));
 				professor.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas));
 				professor.setIdTipoUsuario(Constantes.idTipoUsuarioProfessor);
 
@@ -142,8 +143,13 @@ public class ControleUsuario {
 		return "(Gerado Automaticamente ao Salvar)";
 	}
 
-	private String resumoDeValidacoes(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas, Curso curso,
+	private String resumoDeValidacoes(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas, String nomeUsuario, Curso curso,
 			String resumoDeValidacoes) {
+			
+		if(nomeUsuario.isEmpty()){
+			resumoDeValidacoes += String.format("Campo Nome Obrigatório!") + "\n";
+		}
+		
 		// Valida se tem algo selecionado no combo de Tipo de Usuario
 		if (cmbTipoUsuario.getSelectedIndex() <= 0) {
 			resumoDeValidacoes += String.format("Campo %s Obrigatório!", cmbTipoUsuario.getName()) + "\n";
@@ -153,7 +159,7 @@ public class ControleUsuario {
 //			resumoDeValidacoes += String.format("Campo de Matrícula Obrigatório!") + "\n";
 //		}
 
-		if (curso.getIdCurso() <= 0) {
+		if ( !(curso != null && curso.getIdCurso() > 0)) {
 			resumoDeValidacoes += String.format("Campo Curso Obrigatório!") + "\n";
 		}
 
@@ -192,47 +198,54 @@ public class ControleUsuario {
 		return (ArrayList<Disciplina>) listaDisciplinasSelecionadas;
 	}
 
-	public void validaPesquisaProfessor(JTextField textMatricula, JTextField txtNome,
-			ArrayList<Object> objetosEncontrados, Professor professor) {
+	public ArrayList<Usuario> pesquisaDeUsuario(JTextField textMatricula, JTextField txtNome) {
+		
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		String resumoDeValidacoes = "";
+		
+//		if(txtNome.getText().isEmpty()){
+//			resumoDeValidacoes += String.format("Campo %s Obrigatório", txtNome.getName());
+//		}
+//		
+//		if(textMatricula.getText().isEmpty()){
+//			resumoDeValidacoes += String.format("Campo %s Obrigatório", textMatricula.getName());
+//		}
 
-		boolean validarMatricula = !textMatricula.getText().isEmpty()
-				&& Integer.parseInt(textMatricula.getText()) == professor.getMatricula();
-
-		boolean validarNome = !txtNome.getText().isEmpty() && txtNome.getText().equals(professor.getNome());
-
-		if (validarMatricula && validarNome) {
-
-			objetosEncontrados.add(professor);
-
-		} else if (textMatricula.getText().isEmpty() && validarNome) {
-
-			objetosEncontrados.add(professor);
-
-		} else if (txtNome.getText().isEmpty() && validarMatricula) {
-
-			objetosEncontrados.add(professor);
+		if(resumoDeValidacoes.isEmpty()){
+		
+			try {
+				
+				if(textMatricula.getText().isEmpty())
+				{
+					textMatricula.setText("0");
+				}
+				
+				return usuarioDAO.pesquisaUsuario(Integer.parseInt(textMatricula.getText()), txtNome.getText());
+				
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
 		}
+		
+		return null;
 	}
-
-	public void validaPesquisaAluno(JTextField textMatricula, JTextField txtNome, ArrayList<Object> objetosEncontrados,
-			Aluno aluno) {
-
-		boolean validarMatricula = !textMatricula.getText().isEmpty()
-				&& Integer.parseInt(textMatricula.getText()) == aluno.getMatricula();
-
-		boolean validarNome = !txtNome.getText().isEmpty() && txtNome.getText().equals(aluno.getNome());
-
-		if (validarMatricula && validarNome) {
-
-			objetosEncontrados.add(aluno);
-
-		} else if (textMatricula.getText().isEmpty() && validarNome) {
-
-			objetosEncontrados.add(aluno);
-
-		} else if (txtNome.getText().isEmpty() && validarMatricula) {
-
-			objetosEncontrados.add(aluno);
-		}
+	
+	public ArrayList<Curso> pegaCursosDoUsuarioPeloIdUsuario(int idUsuario) throws DAOException
+	{
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		return usuarioDAO.listaCursosPeloIdUsuario(idUsuario);
+	}
+	
+	public ArrayList<Disciplina> pegaDisciplinasDoCursoSelecionadoPeloIdCurso(int idCurso) throws DAOException
+	{
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+		
+		return usuarioDAO.listaDisciplinaDoCursoPeloIdCurso(idCurso);
 	}
 }

@@ -77,6 +77,8 @@ public class ControleDisciplina {
 
 			// ControlePrincipal.listaDisciplinas.add(disciplina);
 
+			
+			JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
 		}
 	}
 

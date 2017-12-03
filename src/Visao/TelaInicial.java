@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaInicial extends JFrame {
 	public TelaInicial() {
@@ -69,27 +70,60 @@ public class TelaInicial extends JFrame {
 		JLabel lblSistemaMatriUniversitario = new JLabel();
 		lblSistemaMatriUniversitario.setToolTipText("");
 		lblSistemaMatriUniversitario.setText("Sistema de Matr\u00EDcula Universitário");
+		
+		JButton btnConsultarDisciplina = new JButton();
+		btnConsultarDisciplina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		
+		btnConsultarDisciplina.setText("Consultar Disciplina");
+		
+		JButton btnConsultarCurso = new JButton();
+		btnConsultarCurso.setText("Consultar Curso");
+		btnConsultarCurso.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ConsultarCurso consultar = new ConsultarCurso();
+				consultar.setVisible(true);
+			}
+		});
+		
+		
 		GroupLayout gl_pnlSistemaMatriUniversitario = new GroupLayout(pnlSistemaMatriUniversitario);
-		gl_pnlSistemaMatriUniversitario.setHorizontalGroup(gl_pnlSistemaMatriUniversitario
-				.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_pnlSistemaMatriUniversitario.createSequentialGroup().addGap(115)
-						.addGroup(gl_pnlSistemaMatriUniversitario.createParallelGroup(Alignment.LEADING)
-								.addComponent(btnCadastroDisciplina, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-								.addComponent(btnRelatorios, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-								.addComponent(btnConsultarUsuario, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 257,
-										Short.MAX_VALUE)
-								.addComponent(btnCadastroUsuario, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-								.addComponent(btnCadastroCurso, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE))
-						.addGap(109))
-				.addGroup(Alignment.TRAILING, gl_pnlSistemaMatriUniversitario.createSequentialGroup()
-						.addContainerGap(132, Short.MAX_VALUE).addComponent(lblSistemaMatriUniversitario).addGap(129)));
-		gl_pnlSistemaMatriUniversitario
-				.setVerticalGroup(gl_pnlSistemaMatriUniversitario.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_pnlSistemaMatriUniversitario.createSequentialGroup().addContainerGap()
-								.addComponent(lblSistemaMatriUniversitario).addGap(18).addComponent(btnCadastroUsuario)
-								.addGap(18).addComponent(btnCadastroCurso).addGap(18)
-								.addComponent(btnCadastroDisciplina).addGap(18).addComponent(btnConsultarUsuario)
-								.addGap(18).addComponent(btnRelatorios).addContainerGap(44, Short.MAX_VALUE)));
+		gl_pnlSistemaMatriUniversitario.setHorizontalGroup(
+			gl_pnlSistemaMatriUniversitario.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlSistemaMatriUniversitario.createSequentialGroup()
+					.addGap(115)
+					.addComponent(lblSistemaMatriUniversitario))
+				.addComponent(btnCadastroUsuario, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+				.addComponent(btnCadastroCurso, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+				.addComponent(btnCadastroDisciplina, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+				.addComponent(btnConsultarUsuario, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+				.addComponent(btnRelatorios, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+				.addComponent(btnConsultarDisciplina, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+				.addComponent(btnConsultarCurso, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+		);
+		gl_pnlSistemaMatriUniversitario.setVerticalGroup(
+			gl_pnlSistemaMatriUniversitario.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_pnlSistemaMatriUniversitario.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblSistemaMatriUniversitario)
+					.addGap(18)
+					.addComponent(btnCadastroUsuario)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnCadastroCurso)
+					.addGap(18)
+					.addComponent(btnCadastroDisciplina)
+					.addGap(18)
+					.addComponent(btnConsultarUsuario)
+					.addPreferredGap(ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
+					.addComponent(btnConsultarCurso)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnConsultarDisciplina)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(btnRelatorios)
+					.addContainerGap())
+		);
 		pnlSistemaMatriUniversitario.setLayout(gl_pnlSistemaMatriUniversitario);
 	}
 
@@ -97,5 +131,4 @@ public class TelaInicial extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 }

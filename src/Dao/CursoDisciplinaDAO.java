@@ -141,4 +141,109 @@ public class CursoDisciplinaDAO {
 			}
 		}
 	}
+	
+	public String[] listaIdsDoRelacionamentoCursoDisciplinaPelasDisciplinas(String[] ids)  throws DAOException{
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT ID_CURSO_DISCIPLINA FROM CURSO_DISCIPLINA CD WHERE CD.ID_DISCIPLINA = ANY (?)";
+			ps = conn.prepareStatement(sql);
+			
+			Array array = ps.getConnection().createArrayOf("INT", ids);
+			ps.setArray(1, array);
+			
+//			int count = 2;
+//			for(int id : ids){
+//			ps.setInt(count ++, id);
+//			}
+			System.out.println(ps.toString()); 
+			rs = ps.executeQuery();
+
+			ArrayList<String> listaIdsCursoDisciplina = new ArrayList<>();
+
+			while (rs.next()) {
+				listaIdsCursoDisciplina.add(String.valueOf(rs.getInt("ID_CURSO_DISCIPLINA")));	
+			}
+			
+			String[] listaIds = new String[listaIdsCursoDisciplina.size()];
+			
+			int count = 0;
+			for(String id : listaIdsCursoDisciplina)
+			{
+				listaIds[count] = listaIdsCursoDisciplina.get(count);
+						count ++;
+			}
+			
+			return listaIds;
+			
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+
+	public int verificaSeExisteUsuarioVinculadoNaDisciplina(String[] idsCursoDisciplina) throws DAOException {
+
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ArrayList<Integer> listaIdsCursoDisciplina = new ArrayList<>();
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT DISTINCT ID_USUARIO FROM USUARIO_CURSO_DISCIPLINA CD WHERE CD.ID_CURSO_DISCIPLINA = ANY (?)";
+			ps = conn.prepareStatement(sql);
+			
+			Array array = ps.getConnection().createArrayOf("INT", idsCursoDisciplina);
+			ps.setArray(1, array);
+			
+//			int count = 2;
+//			for(int id : ids){
+//			ps.setInt(count ++, id);
+//			}
+			System.out.println(ps.toString()); 
+			
+			rs = ps.executeQuery();
+			int count = 0;
+			while(rs.next())
+			{
+				count ++;
+			}
+			
+			return count;
+			
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
 }

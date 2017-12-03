@@ -42,12 +42,16 @@ public class Curso {
 		this.unidade = unidade;
 	}
 
-	public int getIdCurso() {
+	public int idUnidade() {
 		return idCurso;
 	}
 
 	public void setIdCurso(int idCurso) {
 		this.idCurso = idCurso;
+	}
+
+	public int getIdCurso() {
+		return idCurso;
 	}
 
 	
