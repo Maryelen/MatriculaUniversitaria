@@ -97,6 +97,56 @@ public class CursoDAO {
 		}
 	}
 	
+	public Curso pegaCursoPeloId(int idCurso) throws DAOException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT * FROM CURSO C JOIN UNIDADE U ON C.ID_UNIDADE = U.ID_UNIDADE "
+					+ "WHERE C.ID_CURSO = ? "
+					+ "ORDER BY C.NOME_CURSO ASC";
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, idCurso);
+			
+			System.out.println(ps.toString());
+			rs = ps.executeQuery();
+
+			Curso curso = new Curso();
+			while (rs.next()) {
+
+				curso.setIdCurso(rs.getInt("ID_CURSO"));
+				curso.setNome(rs.getString("NOME_CURSO"));
+
+				Unidade unidade = new Unidade();
+				unidade.setIdUnidade(rs.getInt("ID_UNIDADE"));
+				unidade.setNome(rs.getString("NOME_UNIDADE"));
+
+				curso.setUnidade(unidade);
+			}
+
+			return curso;
+
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+	
 	public ArrayList<Curso> listaCursosPorNome(String nome) throws DAOException {
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -118,10 +168,6 @@ public class CursoDAO {
 			
 			if(filtrarPorNome)
 			{
-				if(!filtro.isEmpty())
-				{
-					filtro += " AND";
-				}
 				
 				filtro+= " LOWER(C.NOME_CURSO) LIKE ?";
 			}
@@ -219,19 +265,32 @@ public class CursoDAO {
 		
 	}
 	
-	public void atualizarCurso(Curso curso, int idUnidade) throws DAOException{
+	public void atualizarCurso(Curso curso, int idUnidade, String nome) throws DAOException{
 		Connection conn = null;
 		PreparedStatement ps = null;
 
 		try {
 			conn = DataBaseService.getConnection();
-			ps = conn.prepareStatement("UPDATE CURSO SET ID_UNIDADE = ? WHERE ID_CURSO = ?");
+			ps = conn.prepareStatement("UPDATE CURSO SET ID_UNIDADE = ?, NOME_CURSO = ? WHERE ID_CURSO = ?");
 			ps.setInt(1, idUnidade);
-			ps.setInt(2, curso.getIdCurso());
+			ps.setString(2, nome);
+			ps.setInt(3, curso.getIdCurso());
 			
 			System.out.println(ps.toString());
 			
 			ps.execute();
+			ps.close();
+			
+			ps = conn.prepareStatement("DELETE FROM CURSO_DISCIPLINA WHERE ID_CURSO= ?");
+			ps.setInt(1, curso.getIdCurso());
+			
+			System.out.println(ps.toString());
+			
+			ps.execute();
+			ps.close();
+			
+			
+			
 
 		} catch (SQLException e) {
 			throw new DAOException("Ocorreu um erro no banco de dados ao excluir o curso" + e);

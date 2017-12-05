@@ -88,6 +88,13 @@ public class TelaInicial extends JFrame {
 			}
 		});
 		
+		btnRelatorios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Relatorio relatorio = new Relatorio();
+				relatorio.setVisible(true);
+			}
+		});
+		
 		
 		GroupLayout gl_pnlSistemaMatriUniversitario = new GroupLayout(pnlSistemaMatriUniversitario);
 		gl_pnlSistemaMatriUniversitario.setHorizontalGroup(

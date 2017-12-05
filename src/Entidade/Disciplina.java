@@ -18,7 +18,8 @@ public class Disciplina {
 	int numeroVagas;
 	int semestre;
 	int ano;
-
+	int qtdVagasPreenchidas;
+	
 	public int getCodigo() {
 		return codigo;
 	}
@@ -73,6 +74,14 @@ public class Disciplina {
 
 	public void setIdDisciplina(int idDisciplina) {
 		this.idDisciplina = idDisciplina;
+	}
+
+	public int getQtdVagasPreenchidas() {
+		return qtdVagasPreenchidas;
+	}
+
+	public void setQtdVagasPreenchidas(int qtdVagasPreenchidas) {
+		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
 	}
 	
 	

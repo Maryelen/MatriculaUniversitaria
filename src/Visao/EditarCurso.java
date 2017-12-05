@@ -15,6 +15,7 @@ import Entidade.Curso;
 import Entidade.Disciplina;
 import Entidade.Unidade;
 import Util.KeySelectionRenderer;
+import Util.TableModelCurso;
 
 import javax.swing.JScrollPane;
 
@@ -33,7 +34,7 @@ public class EditarCurso extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNome;
-	
+	private static Curso cursoAtualizado = new Curso();
 	
 	public EditarCurso(Curso curso){
 		
@@ -163,7 +164,7 @@ public class EditarCurso extends JFrame{
 					int count = 0;
 				
 					for(Disciplina disciplinaSelecionada : listDisciplina.getSelectedValuesList()){
-						
+							
 						if(disciplina.getIdDisciplina() == disciplinaSelecionada.getIdDisciplina())
 						{
 							count ++;
@@ -177,12 +178,27 @@ public class EditarCurso extends JFrame{
 					
 			}
 			
+			curso.setListaDisciplinasCurso((ArrayList<Disciplina>)listDisciplina.getSelectedValuesList());
+				
 			ControleDeCurso controleDeCurso = new ControleDeCurso();
 			
-			controleDeCurso.atualizarCurso(curso, listaDisciplinasPerderamSelecao, ((Unidade)cmbIdUnidade.getSelectedItem()).getIdUnidade());
+			cursoAtualizado = controleDeCurso.atualizarCurso(curso, listaDisciplinasPerderamSelecao, ((Unidade)cmbIdUnidade.getSelectedItem()).getIdUnidade(), txtNome.getText());
+						
+			 int modelIndex = ConsultarCurso.table.convertRowIndexToModel(ConsultarCurso.table.getSelectedRow());
+	         TableModelCurso model = (TableModelCurso)ConsultarCurso.table.getModel();
+	         model.updateRow(modelIndex, cursoAtualizado);
+	         ConsultarCurso.table.setModel(model);
 			
 		}
 	});
+	
+	btnVoltar.addActionListener(new ActionListener() {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			dispose();
+		}
+	});
 	}
 }

@@ -69,6 +69,7 @@ public class CursoDisciplinaDAO {
 				disciplina.setCodigo(rs.getInt("CODIGO_DISCIPLINA"));
 				disciplina.setNumeroVagas(rs.getInt("NUMERO_VAGAS"));
 				disciplina.setAno(rs.getInt("ANO"));
+				disciplina.setQtdVagasPreenchidas(rs.getInt("QTD_VAGAS_PREENCHIDAS"));
 				listaDisciplinas.add(disciplina);
 
 			}
@@ -198,7 +199,7 @@ public class CursoDisciplinaDAO {
 		}
 	}
 
-	public int verificaSeExisteUsuarioVinculadoNaDisciplina(String[] idsCursoDisciplina) throws DAOException {
+	public int verificaSeExisteUsuarioVinculadoNaDisciplina(String[] idsCursoDisciplina, int idCurso) throws DAOException {
 
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -207,11 +208,14 @@ public class CursoDisciplinaDAO {
 
 		try {
 			conn = DataBaseService.getConnection();
-			String sql = "SELECT DISTINCT ID_USUARIO FROM USUARIO_CURSO_DISCIPLINA CD WHERE CD.ID_CURSO_DISCIPLINA = ANY (?)";
+			String sql = "SELECT DISTINCT ID_USUARIO FROM USUARIO_CURSO_DISCIPLINA UCD "
+					+ "JOIN CURSO_DISCIPLINA CD ON UCD.ID_CURSO_DISCIPLINA = CD.ID_CURSO_DISCIPLINA "
+					+ "WHERE UCD.ID_CURSO_DISCIPLINA = ANY (?) AND CD.ID_CURSO = ?";
 			ps = conn.prepareStatement(sql);
 			
 			Array array = ps.getConnection().createArrayOf("INT", idsCursoDisciplina);
 			ps.setArray(1, array);
+			ps.setInt(2, idCurso);
 			
 //			int count = 2;
 //			for(int id : ids){

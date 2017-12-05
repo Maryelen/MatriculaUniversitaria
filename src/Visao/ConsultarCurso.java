@@ -89,8 +89,12 @@ public class ConsultarCurso extends JFrame{
 		// Ação do botão pesquisar
 		public void actionPerformed(ActionEvent arg0) {
 			
+			if(table.getSelectedRow() >= 0){
+			
 			EditarCurso editarCurso = new EditarCurso(objetosEncontrados.get(table.convertRowIndexToModel(table.getSelectedRow())));
-			editarCurso.setVisible(true);;
+			editarCurso.setVisible(true);
+			
+			}
 		}	
 	});
 	
@@ -106,6 +110,15 @@ public class ConsultarCurso extends JFrame{
 		}	
 	});
 	
+	btnVoltar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			dispose();
+		}
+	});
+	
 	}
 	
 	/**
@@ -113,7 +126,7 @@ public class ConsultarCurso extends JFrame{
 	 */
 	private static final long serialVersionUID = 1L;
 	private JTextField txtNomeCurso;
-	private JTable table;
+	public static JTable table;
 	private JList<Object> listaObjetosEncontrados;
 	private ArrayList<Curso> objetosEncontrados;
 }

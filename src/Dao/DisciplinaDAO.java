@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Entidade.Disciplina;
-import Entidade.Unidade;
-import Entidade.Usuario;
 
 public class DisciplinaDAO {
 
@@ -147,6 +145,63 @@ public class DisciplinaDAO {
 			}
 			
 			return 0;
+			
+		} catch (SQLException e) {
+			throw new DAOException("Erro ao listar o conteúdo" + e);
+		} finally {
+			try {
+				if (rs != null) {
+					rs.close();
+				}
+				if (ps != null) {
+					ps.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (Exception e) {
+
+			}
+		}
+	}
+	
+	public ArrayList<Disciplina> listaDisciplinasPeloIdUsuario(int idUsuario, boolean jaCursadas) throws DAOException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ArrayList<Disciplina> listaDisciplinas = new ArrayList<>();
+		ResultSet rs = null;
+
+		try {
+			conn = DataBaseService.getConnection();
+			String sql = "SELECT * FROM DISCIPLINA D "
+						+ "JOIN CURSO_DISCIPLINA CD ON D.ID_DISCIPLINA = CD.ID_DISCIPLINA "
+						+ "JOIN USUARIO_CURSO_DISCIPLINA UCD ON UCD.ID_CURSO_DISCIPLINA = CD.ID_CURSO_DISCIPLINA "
+						+ "WHERE UCD.ID_USUARIO = ?";
+			
+			if(jaCursadas)
+			{
+				sql += " AND D.ANO <= EXTRACT(YEAR FROM current_date) "
+						+ "AND (EXTRACT(MONTH FROM current_date) > 6 AND D.SEMESTRE = 1)";
+			}
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, idUsuario);
+			System.out.println(ps.toString());
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Disciplina disciplina = new Disciplina();
+				disciplina.setIdDisciplina(rs.getInt("ID_DISCIPLINA"));
+				disciplina.setNome(rs.getString("NM_DISCIPLINA"));
+				disciplina.setCodigo(rs.getInt("CODIGO_DISCIPLINA"));
+				disciplina.setNumeroVagas(rs.getInt("NUMERO_VAGAS"));
+				disciplina.setSemestre(rs.getInt("SEMESTRE"));
+				disciplina.setAno(rs.getInt("ANO"));
+				disciplina.setQtdVagasPreenchidas(rs.getInt("QTD_VAGAS_PREENCHIDAS"));
+				listaDisciplinas.add(disciplina);
+
+			}
+			
+			return listaDisciplinas;
 			
 		} catch (SQLException e) {
 			throw new DAOException("Erro ao listar o conteúdo" + e);

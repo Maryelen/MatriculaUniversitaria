@@ -1,5 +1,6 @@
 package Controle;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JOptionPane;
@@ -11,10 +12,10 @@ import Entidade.Disciplina;
 
 public class ControleDisciplina {
 
+	DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
+	
 	public void cadastrarDisciplina(String ano, String nome, String codigo, String cargaHoraria, String numDeVagas,
 			String semestre) {
-
-		DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
 
 		Calendar calendar = Calendar.getInstance();
 
@@ -80,6 +81,20 @@ public class ControleDisciplina {
 			
 			JOptionPane.showMessageDialog(null, "Disciplina cadastrada com sucesso!");
 		}
+	}
+	
+	public ArrayList<Disciplina> pegarDisciplinaPeloIdUsuario(int idUsuario, boolean jaCursadas)
+	{
+		try {
+			
+			return disciplinaDAO.listaDisciplinasPeloIdUsuario(idUsuario, jaCursadas);
+			
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

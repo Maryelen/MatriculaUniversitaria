@@ -18,6 +18,7 @@ import Entidade.Unidade;
 public class ControleDeCurso {
 
 	CursoDAO cursoDAO = new CursoDAO();
+	CursoDisciplinaDAO cursoDisciplinaDAO= new CursoDisciplinaDAO();
 
 	public void CadastrarCurso(JList<Disciplina> listaDisciplinasCurso, JTextField txtNome, Unidade unidade) {
 
@@ -111,7 +112,7 @@ public class ControleDeCurso {
 
 	}
 
-	public void atualizarCurso(Curso curso, ArrayList<Disciplina> disciplinasPerderamSelecao, int idUnidade) {
+	public Curso atualizarCurso(Curso curso, ArrayList<Disciplina> disciplinasPerderamSelecao, int idUnidade, String nome) {
 		
 		try {
 
@@ -131,18 +132,22 @@ public class ControleDeCurso {
 //					param.deleteCharAt(param.length() - 1).toString(), 
 					ids);
 			
-			int qtdUsuariosComDisciplina = cursoDisciplinaDAO.verificaSeExisteUsuarioVinculadoNaDisciplina(idsCursoDisciplina);
+			int qtdUsuariosComDisciplina = cursoDisciplinaDAO.verificaSeExisteUsuarioVinculadoNaDisciplina(idsCursoDisciplina, curso.getIdCurso());
 			if(qtdUsuariosComDisciplina > 0){
 			
 			JOptionPane.showMessageDialog(null, "Existem pelo menos " + qtdUsuariosComDisciplina + " vinculados a uma das disciplinas desvinculadas!");
 			
 			}else{
-				cursoDAO.atualizarCurso(curso, idUnidade);
+				cursoDAO.atualizarCurso(curso, idUnidade, nome);
+				cursoDisciplinaDAO.inserirDisciplinasDoCurso(curso);
+				return cursoDAO.pegaCursoPeloId(curso.getIdCurso());
 			}
 
 		} catch (DAOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
 }

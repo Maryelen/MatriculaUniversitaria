@@ -2,14 +2,16 @@ package Controle;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import com.sun.org.apache.xerces.internal.impl.xs.models.CMBuilder;
-
+import Dao.AlunoDAO;
 import Dao.CursoDisciplinaDAO;
 import Dao.DAOException;
+import Dao.DisciplinaDAO;
+import Dao.ProfessorDAO;
 import Dao.UsuarioCursoDisciplinaDAO;
 import Dao.UsuarioDAO;
 import Entidade.Aluno;
@@ -21,16 +23,17 @@ import Entidade.Usuario;
 
 public class ControleUsuario {
 
-	public String CadastrarUsuario(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas, String matricula,
-			String nomeUsuario, Curso curso) {
+	public String CadastrarUsuario(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas,
+			String matricula, String nomeUsuario, Curso curso) {
 
 		String resumoDeValidacoes = "";
-		
+
 		String nuMatricula = "";
-		
+
 		int idUsuario = 0;
 
-		resumoDeValidacoes = resumoDeValidacoes(cmbTipoUsuario, listaDisciplinas, nomeUsuario, curso, resumoDeValidacoes);
+		resumoDeValidacoes = resumoDeValidacoes(cmbTipoUsuario, listaDisciplinas, nomeUsuario, curso,
+				resumoDeValidacoes);
 
 		String resumoValidacaoMatriculaAluno = validarMatriculaAluno(matricula);
 
@@ -46,12 +49,12 @@ public class ControleUsuario {
 		} else {
 
 			UsuarioDAO usuarioDAO = new UsuarioDAO();
-			
+
 			if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioAluno) {
 				Aluno aluno = new Aluno();
 
 				aluno.setNome(nomeUsuario);
-//				aluno.setMatricula(Integer.parseInt(matricula));
+				// aluno.setMatricula(Integer.parseInt(matricula));
 				ArrayList<Curso> listaCursos = new ArrayList<Curso>();
 				listaCursos.add(curso);
 				aluno.setListaCursos(listaCursos);
@@ -64,23 +67,24 @@ public class ControleUsuario {
 					CursoDisciplinaDAO cursoDisciplinaDAO = new CursoDisciplinaDAO();
 
 					String ids[] = new String[aluno.getListaDisciplinas().size()];
-//					StringBuilder param = new StringBuilder();
+					// StringBuilder param = new StringBuilder();
 					int count = 0;
 					for (Disciplina disciplina : aluno.getListaDisciplinas()) {
 
 						ids[count] = Integer.toString(disciplina.getIdDisciplina());
-//						param.append("?,");
+						// param.append("?,");
 						count++;
 					}
 
 					ArrayList<Integer> idsCursoDisciplina = cursoDisciplinaDAO.listaIdsDoRelacionamentoCursoDisciplina(
-							curso.getIdCurso(), 
-//							param.deleteCharAt(param.length() - 1).toString(), 
+							curso.getIdCurso(),
+							// param.deleteCharAt(param.length() -
+							// 1).toString(),
 							ids);
 
 					UsuarioCursoDisciplinaDAO usuarioCursoDisciplinaDAO = new UsuarioCursoDisciplinaDAO();
 					usuarioCursoDisciplinaDAO.inserirRelacionamentoUsuarioDisciplinasCurso(idUsuario,
-							idsCursoDisciplina);
+							idsCursoDisciplina, aluno);
 
 				} catch (DAOException e) {
 					// TODO Auto-generated catch block
@@ -92,7 +96,7 @@ public class ControleUsuario {
 			} else if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioProfessor) {
 				Professor professor = new Professor();
 				professor.setNome(nomeUsuario);
-//				professor.setMatricula(Integer.parseInt(matricula));
+				// professor.setMatricula(Integer.parseInt(matricula));
 				professor.setListaDisciplinas(getDisciplinasSelecionadas(listaDisciplinas));
 				professor.setIdTipoUsuario(Constantes.idTipoUsuarioProfessor);
 
@@ -102,32 +106,33 @@ public class ControleUsuario {
 					CursoDisciplinaDAO cursoDisciplinaDAO = new CursoDisciplinaDAO();
 
 					String ids[] = new String[professor.getListaDisciplinas().size()];
-//					StringBuilder param = new StringBuilder();
+					// StringBuilder param = new StringBuilder();
 					int count = 0;
 					for (Disciplina disciplina : professor.getListaDisciplinas()) {
 
 						ids[count] = Integer.toString(disciplina.getIdDisciplina());
-//						param.append("?,");
+						// param.append("?,");
 						count++;
 					}
 
 					ArrayList<Integer> idsCursoDisciplina = cursoDisciplinaDAO.listaIdsDoRelacionamentoCursoDisciplina(
-							curso.getIdCurso(), 
-//							param.deleteCharAt(param.length() - 1).toString(), 
+							curso.getIdCurso(),
+							// param.deleteCharAt(param.length() -
+							// 1).toString(),
 							ids);
 
 					UsuarioCursoDisciplinaDAO usuarioCursoDisciplinaDAO = new UsuarioCursoDisciplinaDAO();
 					usuarioCursoDisciplinaDAO.inserirRelacionamentoUsuarioDisciplinasCurso(idUsuario,
-							idsCursoDisciplina);
+							idsCursoDisciplina, professor);
 
 				} catch (DAOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				ControlePrincipal.listaProfessores.add(professor);	
+
+				ControlePrincipal.listaProfessores.add(professor);
 			}
-			
+
 			JOptionPane.showMessageDialog(null,
 					String.format("%s cadastrado com Sucesso!", cmbTipoUsuario.getSelectedItem().toString()));
 
@@ -137,29 +142,30 @@ public class ControleUsuario {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return nuMatricula;
 		}
 		return "(Gerado Automaticamente ao Salvar)";
 	}
 
-	private String resumoDeValidacoes(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas, String nomeUsuario, Curso curso,
-			String resumoDeValidacoes) {
-			
-		if(nomeUsuario.isEmpty()){
-			resumoDeValidacoes += String.format("Campo Nome Obrigatório!") + "\n";
+	private String resumoDeValidacoes(JComboBox<String> cmbTipoUsuario, List<Disciplina> listaDisciplinas,
+			String nomeUsuario, Curso curso, String resumoDeValidacoes) {
+
+		if (nomeUsuario.isEmpty()) {
+			resumoDeValidacoes += String.format("Campo 'Nome' Obrigatório!") + "\n";
 		}
-		
+
 		// Valida se tem algo selecionado no combo de Tipo de Usuario
 		if (cmbTipoUsuario.getSelectedIndex() <= 0) {
-			resumoDeValidacoes += String.format("Campo %s Obrigatório!", cmbTipoUsuario.getName()) + "\n";
+			resumoDeValidacoes += String.format("Campo '%s' Obrigatório!", cmbTipoUsuario.getName()) + "\n";
 		}
-//
-//		if (matricula.isEmpty()) {
-//			resumoDeValidacoes += String.format("Campo de Matrícula Obrigatório!") + "\n";
-//		}
+		//
+		// if (matricula.isEmpty()) {
+		// resumoDeValidacoes += String.format("Campo de Matrícula
+		// Obrigatório!") + "\n";
+		// }
 
-		if ( !(curso != null && curso.getIdCurso() > 0)) {
+		if (!(curso != null && curso.getIdCurso() > 0)) {
 			resumoDeValidacoes += String.format("Campo Curso Obrigatório!") + "\n";
 		}
 
@@ -168,7 +174,17 @@ public class ControleUsuario {
 
 			resumoDeValidacoes += "Não é possível selecionar mais de 5 disciplinas! \n";
 		}
-		
+
+		for (Disciplina disciplina : listaDisciplinas) {
+			if (cmbTipoUsuario.getSelectedIndex() == Constantes.idTipoUsuarioAluno) {
+				
+				if (disciplina.getQtdVagasPreenchidas() >= disciplina.getNumeroVagas()) {
+					resumoDeValidacoes += "Disciplina '" + disciplina.getNome() + "' atingiu o limite de vagas! \n";
+				}
+				
+			}
+		}
+
 		return resumoDeValidacoes;
 	}
 
@@ -199,53 +215,140 @@ public class ControleUsuario {
 	}
 
 	public ArrayList<Usuario> pesquisaDeUsuario(JTextField textMatricula, JTextField txtNome) {
-		
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		
-		String resumoDeValidacoes = "";
-		
-//		if(txtNome.getText().isEmpty()){
-//			resumoDeValidacoes += String.format("Campo %s Obrigatório", txtNome.getName());
-//		}
-//		
-//		if(textMatricula.getText().isEmpty()){
-//			resumoDeValidacoes += String.format("Campo %s Obrigatório", textMatricula.getName());
-//		}
 
-		if(resumoDeValidacoes.isEmpty()){
-		
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		String resumoDeValidacoes = "";
+
+		// if(txtNome.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// txtNome.getName());
+		// }
+		//
+		// if(textMatricula.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// textMatricula.getName());
+		// }
+
+		if (resumoDeValidacoes.isEmpty()) {
+
 			try {
-				
-				if(textMatricula.getText().isEmpty())
-				{
+
+				if (textMatricula.getText().isEmpty()) {
 					textMatricula.setText("0");
 				}
-				
+
 				return usuarioDAO.pesquisaUsuario(Integer.parseInt(textMatricula.getText()), txtNome.getText());
-				
+
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (DAOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}		
+			}
 		}
+
+		return null;
+	}
+
+	public ArrayList<Curso> pegaCursosDoUsuarioPeloIdUsuario(int idUsuario) throws DAOException {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		return usuarioDAO.listaCursosPeloIdUsuario(idUsuario);
+	}
+
+	public ArrayList<Disciplina> pegaDisciplinasDoCursoSelecionadoPeloIdCurso(int idCurso) throws DAOException {
+		UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+		return usuarioDAO.listaDisciplinaDoCursoPeloIdCurso(idCurso);
+	}
+
+	public ArrayList<Usuario> pesquisaAlunosPorDisciplina(int idDisciplina) {
+		AlunoDAO alunoDAO = new AlunoDAO();
 		
+		try {
+			return alunoDAO.listaAlunoPelaDisciplina(idDisciplina);
+		} catch (DAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
-	public ArrayList<Curso> pegaCursosDoUsuarioPeloIdUsuario(int idUsuario) throws DAOException
-	{
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		
-		return usuarioDAO.listaCursosPeloIdUsuario(idUsuario);
+	public ArrayList<Usuario> pesquisaDeAluno(JTextField textMatricula, JTextField txtNome) {
+
+		AlunoDAO alunoDAO = new AlunoDAO();
+
+		String resumoDeValidacoes = "";
+
+		// if(txtNome.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// txtNome.getName());
+		// }
+		//
+		// if(textMatricula.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// textMatricula.getName());
+		// }
+
+		if (resumoDeValidacoes.isEmpty()) {
+
+			try {
+
+				if (textMatricula.getText().isEmpty()) {
+					textMatricula.setText("0");
+				}
+
+				return alunoDAO.pesquisaAluno(Integer.parseInt(textMatricula.getText()), txtNome.getText());
+
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 	
-	public ArrayList<Disciplina> pegaDisciplinasDoCursoSelecionadoPeloIdCurso(int idCurso) throws DAOException
-	{
-		UsuarioDAO usuarioDAO = new UsuarioDAO();
-		
-		return usuarioDAO.listaDisciplinaDoCursoPeloIdCurso(idCurso);
+	public ArrayList<Usuario> pesquisaDeProfessor(JTextField textMatricula, JTextField txtNome) {
+
+		ProfessorDAO professorDAO = new ProfessorDAO();
+
+		String resumoDeValidacoes = "";
+
+		// if(txtNome.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// txtNome.getName());
+		// }
+		//
+		// if(textMatricula.getText().isEmpty()){
+		// resumoDeValidacoes += String.format("Campo %s Obrigatório",
+		// textMatricula.getName());
+		// }
+
+		if (resumoDeValidacoes.isEmpty()) {
+
+			try {
+
+				if (textMatricula.getText().isEmpty()) {
+					textMatricula.setText("0");
+				}
+
+				return professorDAO.pesquisaProfessor(Integer.parseInt(textMatricula.getText()), txtNome.getText());
+
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DAOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return null;
 	}
 }
