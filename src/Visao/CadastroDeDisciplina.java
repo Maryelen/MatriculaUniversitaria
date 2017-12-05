@@ -1,28 +1,21 @@
 package Visao;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import javax.swing.JPanel;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import Controle.ControleDisciplina;
-import Controle.ControlePrincipal;
-import Entidade.Disciplina;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.util.Calendar;
-import java.util.Date;
-import java.awt.event.ActionEvent;
 
 public class CadastroDeDisciplina extends JFrame {
 	/**
@@ -101,8 +94,16 @@ public class CadastroDeDisciplina extends JFrame {
 
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleDisciplina.cadastrarDisciplina(txtAno.getText(), txtNome.getText(), txtCodigo.getText(), 
+				controleDisciplina.cadastrarDisciplina(txtAno.getText(), txtNome.getText(), txtCodigo.getText(),
 						txtCargaHoraria.getText(), txtNumDeVagas.getText(), txtSemestre.getText());
+			}
+		});
+
+		btnVoltar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
 			}
 		});
 

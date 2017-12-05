@@ -93,7 +93,7 @@ public class DisciplinasPorAluno extends JFrame {
 		JButton btnPesquisar = new JButton("Pesquisar");
 		btnPesquisar.setBounds(304, 48, 102, 25);
 		panel.add(btnPesquisar);
-		
+
 		JCheckBox chkCursadas = new JCheckBox("J\u00E1 Cursadas");
 		chkCursadas.setBounds(150, 236, 113, 25);
 		panel.add(chkCursadas);
@@ -103,11 +103,6 @@ public class DisciplinasPorAluno extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 
 				objetosEncontrados = controleUsuario.pesquisaDeAluno(txtMatricula, txtNome);
-
-				// listaObjetosEncontrados = new JList<Object>(
-				// (ControlePrincipal.VetorObjetosEncontrados(objetosEncontrados)));
-				// listaObjetosEncontrados.setVisibleRowCount(5);
-				// listaObjetosEncontrados.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
 				TableModelUsuario model = new TableModelUsuario(objetosEncontrados);
 

@@ -108,7 +108,7 @@ public class CadastroDeUsuario extends JFrame {
 
 			}
 		};
-		
+
 		if (cmbCurso.getSelectedItem() != null) {
 			curso = (Curso) cmbCurso.getSelectedItem();
 
@@ -143,14 +143,13 @@ public class CadastroDeUsuario extends JFrame {
 
 		cmbCurso.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// JComboBox<Curso> comboBox = (JComboBox<Curso>)e.getSource();
 
 				if (cmbCurso.getSelectedItem() != null) {
-					
+
 					curso = (Curso) cmbCurso.getSelectedItem();
 
 					listaDisciplinas.setListData(ControleDeCurso.pegarDisciplinasPeloCurso(curso.getIdCurso()));
-					
+
 					KeySelectionRenderer rendererDisciplinas = new KeySelectionRenderer(listaDisciplinas) {
 						/**
 						 * 
@@ -182,6 +181,15 @@ public class CadastroDeUsuario extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			}
+		});
+
+		btnVoltar.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				dispose();
 			}
 		});
 

@@ -3,7 +3,6 @@ package Visao;
 import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultListCellRenderer;
@@ -12,18 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
-import Controle.ControleDeCurso;
 import Controle.ControleUsuario;
 import Dao.DAOException;
 import Entidade.Curso;
 import Entidade.Disciplina;
 import Entidade.Usuario;
-import Util.KeySelectionRenderer;
 
 public class DetalhesUsuario extends JFrame{
 	/**

@@ -1,16 +1,16 @@
 package Visao;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class TelaInicial extends JFrame {
@@ -71,14 +71,6 @@ public class TelaInicial extends JFrame {
 		lblSistemaMatriUniversitario.setToolTipText("");
 		lblSistemaMatriUniversitario.setText("Sistema de Matr\u00EDcula Universitário");
 		
-		JButton btnConsultarDisciplina = new JButton();
-		btnConsultarDisciplina.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		
-		btnConsultarDisciplina.setText("Consultar Disciplina");
-		
 		JButton btnConsultarCurso = new JButton();
 		btnConsultarCurso.setText("Consultar Curso");
 		btnConsultarCurso.addActionListener(new ActionListener() {
@@ -107,7 +99,6 @@ public class TelaInicial extends JFrame {
 				.addComponent(btnCadastroDisciplina, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
 				.addComponent(btnConsultarUsuario, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
 				.addComponent(btnRelatorios, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
-				.addComponent(btnConsultarDisciplina, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
 				.addComponent(btnConsultarCurso, GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
 		);
 		gl_pnlSistemaMatriUniversitario.setVerticalGroup(
@@ -126,7 +117,6 @@ public class TelaInicial extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED, 97, Short.MAX_VALUE)
 					.addComponent(btnConsultarCurso)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnConsultarDisciplina)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnRelatorios)
 					.addContainerGap())
