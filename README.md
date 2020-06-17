@@ -23,24 +23,24 @@ Outras operações permitidas (além do cadastro): Fazer uma consulta por discip
 <li> Excluir o objeto da estrutura de dados;
 <li> Característica do aluno:
 
-Matrícula;
+Matrícula:
 <li> Nome;
 <li> Curso;
 <li> Disciplinas matriculadas
 <li> Característica do professor:
 
-Professor;
+Professor:
 <li> Nome;
 <li> Lista de cursos que participa;
 <li> Disciplinas que ministra
 <li> Característica do Curso:
 
-Nome;
+Curso:
 <li> Unidade;
 <li> Lista de Disciplinas;
 <li> Característica da Disciplina:
 
-Código;
+Disciplina:
 <li> Nome;
 <li> Carga-horária;
 <li> Número de Vagas;
